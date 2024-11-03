@@ -1,0 +1,49 @@
+@import "src/styles/variables";
+
+.hamburger {
+  position: relative;
+}
+.menu {
+  z-index: 10;
+  background-color: $container-dark;
+  width: max-content;
+  height: max-content;
+  padding: 10px;
+  border-radius: 10px;
+  position: absolute;
+  top: 40px;
+  left: -70px;
+  display: none;
+
+  li a {
+    display: block;
+    color: $text-light;
+    padding: 5px;
+    &:hover {
+      color: $text-muted;
+    }
+  }
+
+  button {
+    font-size: inherit;
+    font-family: inherit;
+    padding: 5px;
+    color: inherit;
+    &:hover {
+      color: $text-muted;
+    }
+  }
+}
+.show {
+  display: block;
+  animation: show 0.4s ease;
+}
+
+@keyframes show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

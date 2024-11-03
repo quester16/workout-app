@@ -1,0 +1,21 @@
+@import "src/styles/variables";
+
+.profileContainer {
+  padding: 20px;
+  background-color: $container-dark; // Темный фон контейнера
+  color: $text-light; // Светлый текст
+  text-align: center;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  max-width: 600px;
+  margin: 100px auto 0;
+}
+
+.btns {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.form {
+  padding-top: 30px;
+}

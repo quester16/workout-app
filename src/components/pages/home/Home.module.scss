@@ -1,0 +1,10 @@
+@import "src/styles/variables";
+.home {
+  position: relative;
+  height: calc(100vh - 110px);
+}
+.heading {
+  font-size: 4rem;
+  text-align: center;
+  font-weight: bold;
+}

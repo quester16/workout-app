@@ -1,0 +1,25 @@
+.loader {
+  opacity: 0;
+}
+.heading {
+  font-size: 3rem;
+  text-align: center;
+  margin-left: 50px;
+}
+.form {
+  margin-top: 100px;
+  padding-top: 100px;
+}
+.back {
+  border: none;
+  background-color: transparent;
+  position: absolute;
+  top: 30px;
+  left: 20px;
+  cursor: pointer;
+}
+.btns {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}

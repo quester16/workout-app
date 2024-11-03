@@ -1,0 +1,27 @@
+@import "src/styles/variables";
+
+.btn {
+  padding: 10px;
+  color: white;
+  border-radius: 10px;
+  border: none;
+  font-size: 20px;
+  min-width: 190px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  &:hover {
+    background-color: lighten($primary-green, 10%);
+  }
+}
+.primary {
+  background: $primary-green;
+}
+.secondary {
+  background: #0c54de;
+  &:hover {
+    background-color: darken(#0c54de, 25%);
+  }
+}
+.wrapper {
+  text-align: center;
+}
