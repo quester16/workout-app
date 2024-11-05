@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User{
+  id Int @id  @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("upadated_at")
+
+  email String @unique
+  name  String
+  password String
+  images String[]
+
+  // Добавляем отношение к упражнениям
+  exercises  Exercise[]
+  // Связь с тренировками
+  workouts   Workout[]
+}
+
+model Exercise{
+  id Int @id  @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("upadated_at")
+
+  name String @unique
+  sets Int
+  exerciseType String? @map("exercise_type")
+
+  exerciseSet ExerciseSet[]
+  workouts Workout[]
+
+  // Внешний ключ на пользователя и связь
+  userId       Int
+  user         User        @relation(fields: [userId], references: [id])
+}
+
+model Workout{
+  id Int @id  @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("upadated_at")
+
+  name String
+  
+  exercises Exercise[]
+  // Внешний ключ на пользователя и связь
+  userId     Int
+  user       User       @relation(fields: [userId], references: [id])
+}
+
+
+model ExerciseSet{
+  id Int @id  @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("upadated_at")
+
+  weight Int
+  repeat Int
+  isCompleted Boolean @default(false) @map("is_completed")
+
+  exerciseId Int
+  exercise Exercise @relation(fields: [exerciseId], references: [id])
+}
