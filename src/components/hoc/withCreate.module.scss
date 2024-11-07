@@ -19,3 +19,11 @@
 .form {
   padding-top: 30px;
 }
+
+.link {
+  color: $text-muted;
+  display: inline-block;
+  text-decoration: underline;
+  margin-bottom: 10px;
+  text-align: right;
+}

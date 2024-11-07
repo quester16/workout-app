@@ -1,4 +1,5 @@
 import { MdArrowBack } from "react-icons/md";
+import { Notification } from "../../notification/Notification.jsx";
 import { Button } from "../../ui/button/Button.jsx";
 import { Input } from "../../ui/input/Input.jsx";
 import { Loader } from "../../ui/loader/Loader.jsx";
@@ -14,6 +15,8 @@ export const Auth = () => {
     navigate,
     register,
     setType,
+    onSuccess,
+    onError,
   } = useAuthPage();
 
   return (
@@ -26,7 +29,7 @@ export const Auth = () => {
         <div className={style.loader} style={{ opacity: isPending ? 1 : 0 }}>
           <Loader />
         </div>
-
+        {onError && <Notification success={false} type={"auth"} />}
         <Input
           register={register}
           errors={errors?.email?.message}

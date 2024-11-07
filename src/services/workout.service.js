@@ -5,7 +5,7 @@ class WorkoutService {
     return caxios.get("/workout");
   }
   getOneWorkout(id) {
-    return caxios.get(`/workout/:${id}`);
+    return caxios.get(`/workout/${id}`);
   }
   createWorkout(data) {
     return caxios.post("/workout/create", data);

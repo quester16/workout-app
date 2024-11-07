@@ -1,4 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import ExerciseService from "../../services/exercise/exercise.service.js";
 import WorkoutService from "../../services/workout.service.js";
@@ -13,6 +14,7 @@ export const useWithCreate = (props) => {
   } = useForm({
     mode: "onChange",
   });
+  const [onError, setOnError] = useState(false);
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data) =>
@@ -26,11 +28,13 @@ export const useWithCreate = (props) => {
       console.log("success");
     },
     onError: (error) => {
+      setOnError(true);
       console.log("error", error.message);
     },
   });
   const createExercise = (data) => {
-    if (props === "wokrout") {
+    // решить это место что и как сделать
+    if (props === "workout") {
       mutate({
         name: data.name,
         exerciseIds: data.select.map((ex) => ex.value),
@@ -48,5 +52,12 @@ export const useWithCreate = (props) => {
     });
   };
 
-  return { createExercise, errors, register, handleSubmit, control };
+  return {
+    createExercise,
+    errors,
+    register,
+    handleSubmit,
+    control,
+    onError,
+  };
 };

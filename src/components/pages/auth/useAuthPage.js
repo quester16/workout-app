@@ -9,7 +9,10 @@ import AuthService from "../../../services/auth.service.js";
 export const useAuthPage = () => {
   const dispatch = useDispatch();
   const [type, setType] = useState("");
+  const [onSuccess, setOnSuccess] = useState(false);
+  const [onError, setOnError] = useState(false);
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -24,9 +27,11 @@ export const useAuthPage = () => {
     onSuccess: () => {
       dispatch(setIsAuth(true));
       navigate("/");
+      setOnSuccess(true);
       console.log("success");
     },
     onError: (error) => {
+      setOnError(true);
       console.log("error", error.message);
     },
   });
@@ -42,5 +47,7 @@ export const useAuthPage = () => {
     register,
     errors,
     setType,
+    onSuccess,
+    onError,
   };
 };

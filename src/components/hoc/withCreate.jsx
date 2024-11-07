@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom";
 import Layout from "../layout/Layout.jsx";
+import { Notification } from "../notification/Notification.jsx";
 import { Button } from "../ui/button/Button.jsx";
 import { Input } from "../ui/input/Input.jsx";
 import { ReactSelect } from "../ui/select/Select.jsx";
@@ -8,12 +10,13 @@ import style from "./withCreate.module.scss";
 const withCreate = (WrappedComponent, type) => {
   // eslint-disable-next-line react/display-name
   return function () {
-    const { createExercise, errors, handleSubmit, register, control } =
+    const { createExercise, errors, handleSubmit, register, control, onError } =
       useWithCreate(type);
 
     const toRender = () => {
       return (
         <div className={style.profileContainer}>
+          {onError && <Notification type={type} success={false} />}
           <form className={style.form} onSubmit={handleSubmit(createExercise)}>
             <Input
               register={register}
@@ -27,7 +30,12 @@ const withCreate = (WrappedComponent, type) => {
             />
 
             {type === "workout" ? (
-              <ReactSelect control={control} isMulti={true} />
+              <>
+                <Link to={"/new-exercise"} className={style.link}>
+                  Создать упражнение
+                </Link>
+                <ReactSelect control={control} isMulti={true} />
+              </>
             ) : (
               <>
                 <Input
