@@ -11,7 +11,7 @@ export const SingleWorkout = () => {
 	// todo: нодо сделать правильное id для сервиса
 	const { data, status } = useQuery({
 		queryKey: ['exercise-log'],
-		queryFn: () => WorkoutService.getOneWorkout(3),
+		queryFn: () => WorkoutService.getOneWorkout(1),
 		select: ({ data }) => data
 	})
 

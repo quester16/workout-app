@@ -1,0 +1,33 @@
+@import 'src/styles/variables';
+
+.container {
+	padding: 20px;
+	background-color: $container-dark; // Темный фон контейнера
+	color: $text-light; // Светлый текст
+	text-align: center;
+	border-radius: 15px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+	max-width: 600px;
+	margin: 0 auto;
+}
+.header_title {
+	display: flex;
+	justify-content: space-between;
+	text-align: left;
+	font-size: 22px;
+	color: $primary-blue; // Яркий синий для заголовка
+	margin-bottom: 10px;
+	text-transform: capitalize;
+	.type {
+		text-transform: none;
+		font-size: 20px;
+		color: darken($primary-blue, 15%); // Яркий синий для заголовка
+		text-align: left;
+	}
+}
+
+.row {
+	display: flex;
+	justify-content: space-between;
+	color: $text-light;
+}
