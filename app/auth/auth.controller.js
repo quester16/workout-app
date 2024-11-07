@@ -11,7 +11,6 @@ export const authUser = async (req, res) => {
 	const user = await prisma.user.findUnique({
 		where: { email }
 	})
-	console.log(user)
 	const decoded = await verify(user.password, password)
 	if (user && decoded) {
 		const token = await jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
