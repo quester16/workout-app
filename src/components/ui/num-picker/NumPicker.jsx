@@ -1,23 +1,29 @@
 import { useState } from 'react'
 import Picker from 'react-mobile-picker'
 
-// todo:complete numPicker
+// todo: make a num generate function for weight and reps
+const nums = (type) => {
+	const arr = []
+	for(let i = 0; i < 100; i++) {
+		arr.push(i)
+	}
+	if(type === "reps") return arr
+	return arr.map(num => num + 'kg')
+}
 
 const selections = {
-	title: ['Mr.', 'Mrs.', 'Ms.', 'Dr.'],
-	firstName: ['John', 'Micheal', 'Elizabeth'],
-	lastName: ['Lennon', 'Jackson', 'Jordan', 'Legend', 'Taylor']
+	reps: nums('reps'),
+	weight: nums('weight'),
 }
 
 function NumberPicker() {
 	const [pickerValue, setPickerValue] = useState({
-		title: 'Mr.',
-		firstName: 'Micheal',
-		lastName: 'Jordan'
+		reps: 4,
+		weight: '6kg',
 	})
-
+ console.log(pickerValue)
 	return (
-		<Picker value={pickerValue} onChange={setPickerValue}>
+		<Picker  value={pickerValue} onChange={setPickerValue}>
 			{Object.keys(selections).map(name => (
 				<Picker.Column key={name} name={name}>
 					{selections[name].map(option => (
