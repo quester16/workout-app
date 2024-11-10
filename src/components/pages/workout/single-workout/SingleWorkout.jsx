@@ -1,5 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
+import { useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
+import { setWorkout } from '../../../../redux/slices/workoutSlice.js'
 import WorkoutService from '../../../../services/workout.service.js'
 import Layout from '../../../layout/Layout.jsx'
 import style from './SingleWorkout.module.scss'
@@ -7,13 +9,15 @@ import style from './SingleWorkout.module.scss'
 export const SingleWorkout = () => {
 	const { id } = useParams()
 	const navigate = useNavigate()
+	const dispatch = useDispatch()
 
 	// todo: нодо сделать правильное id для сервиса
 	const { data, status } = useQuery({
 		queryKey: ['exercise-log'],
-		queryFn: () => WorkoutService.getOneWorkout(1),
+		queryFn: () => WorkoutService.getOneWorkout(3),
 		select: ({ data }) => data
 	})
+	dispatch(setWorkout(data))
 
 	return (
 		<Layout>

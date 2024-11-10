@@ -48,7 +48,7 @@ export const useWithCreate = props => {
 		}
 		console.log('createWorkout', {
 			name: data.name,
-			exerciseIds: data.select.map(ex => ex.value)
+			exerciseIds: data?.select?.map(ex => ex.value)
 		})
 	}
 
