@@ -37,7 +37,15 @@ export const getOneWorkout = async (req, res) => {
 			id: +req.params.id
 		},
 		include: {
-			exercises: true,
+			exercises: {
+				select: {
+					id: true,
+					name: true,
+					sets: true,
+					exerciseType: true,
+					exerciseSet: true
+				}
+			},
 			user: {
 				select: UserFields
 			}
