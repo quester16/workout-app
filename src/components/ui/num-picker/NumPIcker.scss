@@ -1,0 +1,20 @@
+.modal {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: #333;
+	padding: 20px;
+	border-radius: 10px;
+	z-index: 1000;
+	color: #fff;
+}
+
+.picker-container {
+	margin-bottom: 20px;
+	color: #fff;
+}
+
+button {
+	margin-right: 10px;
+}

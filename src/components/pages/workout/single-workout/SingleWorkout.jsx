@@ -12,9 +12,9 @@ export const SingleWorkout = () => {
 	const dispatch = useDispatch()
 
 	// todo: нодо сделать правильное id для сервиса
-	const { data, status } = useQuery({
+	const { data } = useQuery({
 		queryKey: ['exercise-log'],
-		queryFn: () => WorkoutService.getOneWorkout(3),
+		queryFn: () => WorkoutService.getOneWorkout(id),
 		select: ({ data }) => data
 	})
 	dispatch(setWorkout(data))
