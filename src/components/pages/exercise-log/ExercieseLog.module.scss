@@ -31,11 +31,12 @@
 	justify-content: space-between;
 	color: $text-light;
 }
-.action_row{
+.action_row {
 	margin-top: 20px;
 	display: flex;
 	justify-content: space-between;
-	
+	align-items: center;
+
 	.modal {
 		position: absolute;
 		width: 300px;
@@ -46,8 +47,12 @@
 		padding-bottom: 20px;
 	}
 }
-.complete{
+.complete {
 	margin: 60px 0 10px;
 }
-.checkbox{
+.action_col {
+	min-width: 100px;
+	background-color: $accent-orange;
+	border-radius: 15px;
+	cursor: pointer;
 }

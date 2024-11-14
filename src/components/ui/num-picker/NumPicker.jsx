@@ -18,11 +18,15 @@ const selections = {
 }
 
 // eslint-disable-next-line react/prop-types
-function NumberPicker({ getValues, setShow }) {
-	const [pickerValue, setPickerValue] = useState({
-		repeat: 0,
-		weight: 0
-	})
+function NumberPicker({ getValues, setShow, sets, index }) {
+	const [pickerValue, setPickerValue] = useState(
+		sets
+			? sets[index]
+			: {
+					repeat: 0,
+					weight: 0
+				}
+	)
 	const handleSubmit = () => {
 		getValues(pickerValue)
 		setShow(false)

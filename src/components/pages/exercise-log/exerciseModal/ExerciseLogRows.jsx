@@ -1,55 +1,47 @@
-import { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import useOnClickOutside from '../../../../hooks/useOnClickOutside.jsx'
+import { setExerciseSets } from '../../../../redux/slices/workoutSlice.js'
 import { Button } from '../../../ui/button/Button.jsx'
 import NumberPicker from '../../../ui/num-picker/NumPicker.jsx'
 import style from '../ExercieseLog.module.scss'
 
 // eslint-disable-next-line react/prop-types
-export const ExerciseLogRows = ({ index, currentExercise }) => {
-	const { id } = useParams()
+export const ExerciseLogRows = ({ index, currentExercise, setSets, sets }) => {
+	const { ref, setIsOpen, isOpen } = useOnClickOutside(false)
+	const dispatch = useDispatch()
 
-	const [exerciseSets, setExerciseSets] = useState({})
-	const [isChecked, setIsChecked] = useState(false)
-	const [show, setShow] = useState(false)
-
-	const getValues = updateSet => {
-		setExerciseSets(updateSet)
+	const getValues = updatedSet => {
+		setSets(prevSets =>
+			prevSets.map(set => (set.id === updatedSet.id ? updatedSet : set))
+		)
+		dispatch(setExerciseSets(updatedSet))
 	}
-
 	return (
 		<div className={style.action_row} key={index}>
 			<div>
 				{currentExercise[0].exerciseSet[index].weight +
-					' kg/' +
+					'kg / ' +
 					currentExercise[0].exerciseSet[index].repeat}
 			</div>
-			{Object.keys(exerciseSets).length ? (
-				<p>
-					{exerciseSets.weight} / {exerciseSets.repeat}
-				</p>
+			{Object.keys(sets[index]).length ? (
+				<div className={style.action_col} onClick={() => setIsOpen(!isOpen)}>
+					{sets[index].weight} / {sets[index].repeat}
+				</div>
 			) : (
-				<Button
-					type={'secondary'}
-					handleClick={() => {
-						setShow(true)
-						console.log(index)
-					}}
-				>
-					open
+				<Button type={'secondary'} handleClick={() => setIsOpen(!isOpen)}>
+					to set
 				</Button>
 			)}
-			{show && (
-				<div className={style.modal}>
-					<NumberPicker getValues={getValues} setShow={setShow} />
+			{isOpen && (
+				<div className={style.modal} ref={ref}>
+					<NumberPicker
+						getValues={getValues}
+						setShow={setIsOpen}
+						index={index}
+						sets={sets}
+					/>
 				</div>
 			)}
-			<div style={{ width: 49 }}>
-				<input
-					className={style.checkbox}
-					type={'checkbox'}
-					onChange={() => setIsChecked(true)}
-				/>
-			</div>
 		</div>
 	)
 }
