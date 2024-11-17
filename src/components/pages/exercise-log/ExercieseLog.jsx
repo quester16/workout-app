@@ -12,13 +12,15 @@ export const ExerciseLog = () => {
 	const exerciseSets = useSelector(state => state.workout.exerciseSets)
 	let currentExercise = exercises.filter(exer => exer.id === +id)
 
-	const [sets, setSets] = useState([
-		{ id: 0, weight: 0, repeat: 0 },
-		{ id: 1, weight: 0, repeat: 0 },
-		{ id: 2, weight: 0, repeat: 0 }
-	])
+	console.log(currentExercise)
 
-	// todo: gather reps + weight + isChecked and maybe delete completed section
+	const state = Array.from({ length: currentExercise[0]?.sets }).map(
+		(_, index) => ({ id: index, repeat: 0, weight: 0 })
+	)
+	const [sets, setSets] = useState(() => state)
+
+	console.log(sets)
+	// todo: gather reps + weight + isChecked and maybe delete is-completed section
 
 	const generateActionRow = () => {
 		return Array.from({ length: currentExercise[0]?.sets }).map((_, index) => {

@@ -16,6 +16,7 @@ export const ExerciseLogRows = ({ index, currentExercise, setSets, sets }) => {
 		)
 		dispatch(setExerciseSets(updatedSet))
 	}
+
 	return (
 		<div className={style.action_row} key={index}>
 			<div>
@@ -23,7 +24,7 @@ export const ExerciseLogRows = ({ index, currentExercise, setSets, sets }) => {
 					'kg / ' +
 					currentExercise[0].exerciseSet[index].repeat}
 			</div>
-			{Object.keys(sets[index]).length ? (
+			{sets[index].repeat ? (
 				<div className={style.action_col} onClick={() => setIsOpen(!isOpen)}>
 					{sets[index].weight} / {sets[index].repeat}
 				</div>
