@@ -14,11 +14,18 @@ export const createExerciseSet = async (req, res) => {
 		})
 	}
 
+	// удаляем старые потому что create many добаляет новые данные к старым
+	await prisma.exerciseSet.deleteMany({
+		where: {
+			exerciseId: exerciseId
+		}
+	})
+
+	// создаем много записей
 	const exerciseSet = await prisma.exerciseSet.createMany({
 		data: sets.map(set => ({
 			repeat: set.repeat, // маппим данные из запроса
 			weight: set.weight,
-			isCompleted: set.isCompleted,
 			exerciseId: exerciseId // связываем с упражнением
 		}))
 	})
