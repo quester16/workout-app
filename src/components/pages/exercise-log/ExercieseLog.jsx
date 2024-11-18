@@ -5,22 +5,26 @@ import Layout from '../../layout/Layout.jsx'
 import { Button } from '../../ui/button/Button.jsx'
 import style from './ExercieseLog.module.scss'
 import { ExerciseLogRows } from './exerciseModal/ExerciseLogRows.jsx'
+import { useExerciseLog } from './useExerciseLog.js'
 
 export const ExerciseLog = () => {
 	const { id } = useParams()
-	const { exercises } = useSelector(state => state.workout.workout)
-	const exerciseSets = useSelector(state => state.workout.exerciseSets)
-	let currentExercise = exercises.filter(exer => exer.id === +id)
+	const { handleCreateExerciseLog } = useExerciseLog()
+	// let exercises
+	// ;(async () => {
+	// 	const { data } = await caxios(`http://localhost:5555/api/workout/${id}`)
+	// 	exercises = data.exercises
+	// })()
 
-	console.log(currentExercise)
+	// todo: исправть ошибку с перезагрузкой
+	const { exercises } = useSelector(state => state.workout.workout)
+	let currentExercise = exercises.filter(exer => exer.id === +id)
 
 	const state = Array.from({ length: currentExercise[0]?.sets }).map(
 		(_, index) => ({ id: index, repeat: 0, weight: 0 })
 	)
-	const [sets, setSets] = useState(() => state)
 
-	console.log(sets)
-	// todo: gather reps + weight + isChecked and maybe delete is-completed section
+	const [sets, setSets] = useState(() => state)
 
 	const generateActionRow = () => {
 		return Array.from({ length: currentExercise[0]?.sets }).map((_, index) => {
@@ -35,6 +39,7 @@ export const ExerciseLog = () => {
 			)
 		})
 	}
+
 	return (
 		<Layout>
 			<div className={style.container}>
@@ -53,7 +58,7 @@ export const ExerciseLog = () => {
 				<div className={style.complete}>
 					<Button
 						type={'primary'}
-						// handleClick={() => console.log(exerciseSets)}
+						handleClick={() => handleCreateExerciseLog(sets, id)}
 					>
 						Сохранить
 					</Button>

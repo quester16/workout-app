@@ -15,8 +15,8 @@ class ExerciseService {
 		return caxios.delete(`/exercise/${id}`)
 	}
 	// get exercise log
-	getLogExercise(id) {
-		return caxios.get(`/exercise/set/${id}`)
+	createLogExercise(data, id) {
+		return caxios.post(`/exercise/set/${id}`, data)
 	}
 }
 

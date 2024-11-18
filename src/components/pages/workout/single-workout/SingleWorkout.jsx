@@ -11,7 +11,6 @@ export const SingleWorkout = () => {
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
 
-	// todo: нодо сделать правильное id для сервиса
 	const { data } = useQuery({
 		queryKey: ['exercise-log'],
 		queryFn: () => WorkoutService.getOneWorkout(id),
