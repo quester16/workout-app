@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import { setWorkout } from '../../../../redux/slices/workoutSlice.js'
 import WorkoutService from '../../../../services/workout.service.js'
 import Layout from '../../../layout/Layout.jsx'
 import style from './SingleWorkout.module.scss'
@@ -16,7 +15,6 @@ export const SingleWorkout = () => {
 		queryFn: () => WorkoutService.getOneWorkout(id),
 		select: ({ data }) => data
 	})
-	dispatch(setWorkout(data))
 
 	return (
 		<Layout>

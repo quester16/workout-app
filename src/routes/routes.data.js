@@ -9,7 +9,7 @@ import { SingleWorkout } from '../components/pages/workout/single-workout/Single
 import { WorkoutList } from '../components/pages/workout/workout-list/WorkoutList.jsx'
 
 const CreateWorkout = withCreate(NewWorkout, 'workout')
-const CreaetNewExercise = withCreate(NewExercise, 'exercise')
+const CreateNewExercise = withCreate(NewExercise, 'exercise')
 
 export const routes = [
 	{
@@ -34,7 +34,7 @@ export const routes = [
 	},
 	{
 		path: '/new-exercise',
-		element: CreaetNewExercise,
+		element: CreateNewExercise,
 		isAuth: true
 	},
 	{
