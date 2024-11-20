@@ -2,7 +2,6 @@ import { useState } from 'react'
 import Picker from 'react-mobile-picker'
 import { Button } from '../button/Button.jsx'
 
-// todo: make a num generate function for weight and reps
 const nums = type => {
 	const arr = []
 	for (let i = 0; i < 100; i++) {
@@ -19,6 +18,7 @@ const selections = {
 
 // eslint-disable-next-line react/prop-types
 function NumberPicker({ getValues, setShow, sets, index }) {
+	console.log(sets[index])
 	const [pickerValue, setPickerValue] = useState(
 		sets
 			? sets[index]

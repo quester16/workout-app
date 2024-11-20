@@ -13,30 +13,27 @@ export const ExerciseLog = () => {
 	const { id } = useParams()
 	const { handleCreateExerciseLog } = useExerciseLog()
 
-	// todo: разное localStorage для кождого лога упражнений
-
-	const { data: exercises, isLoading } = useQuery({
+	const { data: workout, isLoading } = useQuery({
 		queryKey: ['get log', id],
 		queryFn: () => WorkoutService.getOneWorkout(id),
-		select: ({ data }) => data,
-		staleTime: 0,
-		refetchOnMount: true,
-		enabled: !!id
+		select: ({ data }) => data
 	})
 
 	// 2. Стейт для хранения сетов
 	const [sets, setSets] = useState([])
 
-	// 3. useEffect для инициализации данных из localStorage
+	// 3. useEffect для инициализации данных из localStorage или exercises
 	useEffect(() => {
-		const savedValues = JSON.parse(localStorage.getItem('selectedValues'))
-		if (savedValues) {
+		if (!workout || !workout.exercises) return // Проверка наличия данных
+		console.log(workout.exercises[id - 1].name)
+		const savedValues = JSON.parse(
+			localStorage.getItem(workout.exercises[id - 1].id)
+		)
+		if (savedValues && Array.isArray(savedValues)) {
 			setSets(savedValues)
 		} else {
-			// Создаём массив с начальным состоянием, если данных нет
-			const currentExercise = exercises.exercises.filter(
-				exer => exer.id === +id
-			)
+			const currentExercise = workout.exercises.find(exer => exer.id === +id)
+
 			if (currentExercise) {
 				const initialSets = Array.from({ length: currentExercise.sets }).map(
 					(_, index) => ({
@@ -45,15 +42,15 @@ export const ExerciseLog = () => {
 						weight: 0
 					})
 				)
-				setSets(initialSets)
+				setSets(initialSets) // Устанавливаем начальные данные
 			}
 		}
-	}, [exercises, id])
+	}, [workout, id])
 
 	// 4. useEffect для сохранения в localStorage при изменении sets
 	useEffect(() => {
-		if (sets.length > 0) {
-			localStorage.setItem('selectedValues', JSON.stringify(sets))
+		if (sets && sets.length > 0) {
+			localStorage.setItem(workout.exercises[id - 1].id, JSON.stringify(sets))
 		}
 	}, [sets])
 
@@ -62,20 +59,20 @@ export const ExerciseLog = () => {
 		return <Loader />
 	}
 
-	if (!exercises) {
+	if (!workout || !workout.exercises) {
 		console.warn('No exercises found')
 		return <p>No exercises found</p>
 	}
 
-	const currentExercise = exercises.exercises.filter(exer => exer.id === +id)
+	const currentExercise = workout.exercises.find(exer => exer.id === +id)
 	if (!currentExercise) {
 		console.warn('Exercise not found')
 		return <p>Exercise not found</p>
 	}
-	console.log(sets)
+	console.log(currentExercise)
 
 	const generateActionRow = () => {
-		return Array.from({ length: currentExercise[0]?.sets }).map((_, index) => {
+		return Array.from({ length: currentExercise.sets }).map((_, index) => {
 			return (
 				<ExerciseLogRows
 					key={index}
@@ -92,14 +89,18 @@ export const ExerciseLog = () => {
 		<Layout>
 			<div className={style.container}>
 				<div className={style.header_title}>
-					{currentExercise[0]?.name}
-					<div className={style.type}>{currentExercise[0]?.exerciseType}</div>
+					{currentExercise?.name}
+					<div className={style.type}>{currentExercise?.exerciseType}</div>
 				</div>
 				<hr style={{ marginBottom: 20 }} />
 				<div>
 					<div className={style.row}>
-						<div>Previous</div>
-						<div>Weight & Repeats</div>
+						<div>
+							<strong>Previous</strong>
+						</div>
+						<div>
+							<strong>Weight & Repeats</strong>
+						</div>
 					</div>
 					{generateActionRow()}
 				</div>

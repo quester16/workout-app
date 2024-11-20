@@ -12,14 +12,13 @@ export const ExerciseLogRows = ({ index, currentExercise, setSets, sets }) => {
 			prevSets.map(set => (set.id === updatedSet.id ? updatedSet : set))
 		)
 	}
-	console.log(sets[index])
 	return (
 		<div className={style.action_row} key={index}>
 			<div>
-				{currentExercise[0].exerciseSet.length
-					? currentExercise[0].exerciseSet[index].weight +
+				{currentExercise.exerciseSet.length
+					? currentExercise.exerciseSet[index].weight +
 						'kg / ' +
-						currentExercise[0].exerciseSet[index].repeat
+						currentExercise.exerciseSet[index].repeat
 					: '0kg/0'}
 			</div>
 			{sets[index] ? (
