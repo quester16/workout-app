@@ -18,7 +18,6 @@ const selections = {
 
 // eslint-disable-next-line react/prop-types
 function NumberPicker({ getValues, setShow, sets, index }) {
-	console.log(sets[index])
 	const [pickerValue, setPickerValue] = useState(
 		sets
 			? sets[index]

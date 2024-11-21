@@ -18,16 +18,16 @@ export const ExerciseLog = () => {
 		queryFn: () => WorkoutService.getOneWorkout(id),
 		select: ({ data }) => data
 	})
-
 	// 2. Стейт для хранения сетов
 	const [sets, setSets] = useState([])
+	const [isCompleted, setIsCompleted] = useState(false)
 
 	// 3. useEffect для инициализации данных из localStorage или exercises
 	useEffect(() => {
 		if (!workout || !workout.exercises) return // Проверка наличия данных
-		console.log(workout.exercises[id - 1].name)
+
 		const savedValues = JSON.parse(
-			localStorage.getItem(workout.exercises[id - 1].id)
+			localStorage.getItem(workout.exercises[0].id)
 		)
 		if (savedValues && Array.isArray(savedValues)) {
 			setSets(savedValues)
@@ -50,7 +50,7 @@ export const ExerciseLog = () => {
 	// 4. useEffect для сохранения в localStorage при изменении sets
 	useEffect(() => {
 		if (sets && sets.length > 0) {
-			localStorage.setItem(workout.exercises[id - 1].id, JSON.stringify(sets))
+			localStorage.setItem(workout.exercises[0].id, JSON.stringify(sets))
 		}
 	}, [sets])
 
@@ -69,7 +69,6 @@ export const ExerciseLog = () => {
 		console.warn('Exercise not found')
 		return <p>Exercise not found</p>
 	}
-	console.log(currentExercise)
 
 	const generateActionRow = () => {
 		return Array.from({ length: currentExercise.sets }).map((_, index) => {
@@ -107,7 +106,7 @@ export const ExerciseLog = () => {
 				<div className={style.complete}>
 					<Button
 						type={'primary'}
-						handleClick={() => handleCreateExerciseLog(sets, id)}
+						handleClick={() => handleCreateExerciseLog({ sets }, setSets)}
 					>
 						Сохранить
 					</Button>

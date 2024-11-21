@@ -1,5 +1,4 @@
 import useOnClickOutside from '../../../../hooks/useOnClickOutside.jsx'
-import { Button } from '../../../ui/button/Button.jsx'
 import NumberPicker from '../../../ui/num-picker/NumPicker.jsx'
 import style from '../ExercieseLog.module.scss'
 
@@ -21,14 +20,10 @@ export const ExerciseLogRows = ({ index, currentExercise, setSets, sets }) => {
 						currentExercise.exerciseSet[index].repeat
 					: '0kg/0'}
 			</div>
-			{sets[index] ? (
+			{sets[index] && (
 				<div className={style.action_col} onClick={() => setIsOpen(!isOpen)}>
 					{sets[index].weight} / {sets[index].repeat}
 				</div>
-			) : (
-				<Button type={'secondary'} handleClick={() => setIsOpen(!isOpen)}>
-					to set
-				</Button>
 			)}
 			{isOpen && (
 				<div className={style.modal} ref={ref}>
