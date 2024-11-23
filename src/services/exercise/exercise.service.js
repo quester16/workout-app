@@ -17,7 +17,7 @@ class ExerciseService {
 	// get exercise log
 	createLogExercise(data, id) {
 		console.log(data, id)
-		// return caxios.post(`/exercise/set/${id}`, data)
+		return caxios.post(`/exercise/set/${id}`, data)
 	}
 }
 

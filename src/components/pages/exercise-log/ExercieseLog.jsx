@@ -24,15 +24,14 @@ export const ExerciseLog = () => {
 
 	// 3. useEffect для инициализации данных из localStorage или exercises
 	useEffect(() => {
-		if (!workout || !workout.exercises) return // Проверка наличия данных
+		if (!workout || !workout.exercise) return // Проверка наличия данных
 
-		const savedValues = JSON.parse(
-			localStorage.getItem(workout.exercises[0].id)
-		)
+		const savedValues = JSON.parse(localStorage.getItem(workout.exercise[0].id))
 		if (savedValues && Array.isArray(savedValues)) {
 			setSets(savedValues)
 		} else {
-			const currentExercise = workout.exercises.find(exer => exer.id === +id)
+			const currentExercise = workout.exercise.find(exer => exer.id === +id)
+			console.log(workout.exercise)
 
 			if (currentExercise) {
 				const initialSets = Array.from({ length: currentExercise.sets }).map(
@@ -50,7 +49,7 @@ export const ExerciseLog = () => {
 	// 4. useEffect для сохранения в localStorage при изменении sets
 	useEffect(() => {
 		if (sets && sets.length > 0) {
-			localStorage.setItem(workout.exercises[0].id, JSON.stringify(sets))
+			localStorage.setItem(workout.exercise[0].id, JSON.stringify(sets))
 		}
 	}, [sets])
 
@@ -59,12 +58,12 @@ export const ExerciseLog = () => {
 		return <Loader />
 	}
 
-	if (!workout || !workout.exercises) {
-		console.warn('No exercises found')
+	if (!workout || !workout.exercise) {
+		console.warn('No exercise found')
 		return <p>No exercises found</p>
 	}
 
-	const currentExercise = workout.exercises.find(exer => exer.id === +id)
+	const currentExercise = workout.exercise.find(exer => exer.id === +id)
 	if (!currentExercise) {
 		console.warn('Exercise not found')
 		return <p>Exercise not found</p>

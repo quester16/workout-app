@@ -22,10 +22,10 @@ export const useExerciseLog = () => {
 					: arr[i].weight
 		}))
 		mutate(newData)
-		// console.log(newData)
-		// setSets(prev =>
-		// 	prev.map((_, index) => ({ id: index, repeat: 0, weight: 0 }))
-		// )
+		console.log(newData)
+		setSets(prev =>
+			prev.map((_, index) => ({ id: index, repeat: 0, weight: 0 }))
+		)
 	}
 	return {
 		handleCreateExerciseLog

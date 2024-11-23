@@ -14,10 +14,10 @@ export const ExerciseLogRows = ({ index, currentExercise, setSets, sets }) => {
 	return (
 		<div className={style.action_row} key={index}>
 			<div>
-				{currentExercise.exerciseSet.length
-					? currentExercise.exerciseSet[index].weight +
+				{currentExercise.exerciseLog.length
+					? currentExercise.exerciseLog[index].weight +
 						'kg / ' +
-						currentExercise.exerciseSet[index].repeat
+						currentExercise.exerciseLog[index].repeat
 					: '0kg/0'}
 			</div>
 			{sets[index] && (

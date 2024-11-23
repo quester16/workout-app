@@ -16,6 +16,8 @@ export const SingleWorkout = () => {
 		select: ({ data }) => data
 	})
 
+	// if(data.)
+
 	return (
 		<Layout>
 			<div className={style.container}>
@@ -23,7 +25,7 @@ export const SingleWorkout = () => {
 					<div className={style.min}>{data?.minutes} minutes</div>
 					{data?.name}
 				</div>
-				{data?.exercises.map(ex => (
+				{data?.exercise.map(ex => (
 					<div
 						className={style.exercise_card}
 						key={ex.id}
