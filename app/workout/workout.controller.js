@@ -6,7 +6,7 @@ export const createWorkout = async (req, res) => {
 	const workout = await prisma.workout.create({
 		data: {
 			name,
-			exercises: {
+			exercise: {
 				connect: exerciseIds.map(id => ({ id: +id }))
 			},
 			userId: req.user.id
@@ -23,7 +23,7 @@ export const getWorkouts = async (req, res) => {
 			userId: req.user.id
 		},
 		include: {
-			exercises: true
+			exercise: true
 		}
 	})
 
@@ -37,13 +37,13 @@ export const getOneWorkout = async (req, res) => {
 			id: +req.params.id
 		},
 		include: {
-			exercises: {
+			exercise: {
 				select: {
 					id: true,
 					name: true,
 					sets: true,
 					exerciseType: true,
-					exerciseSet: true
+					exerciseLog: true
 				}
 			},
 			user: {
@@ -57,7 +57,7 @@ export const getOneWorkout = async (req, res) => {
 			message: 'No workout with this id'
 		})
 	}
-	const minutes = Math.ceil(workout.exercises.length * 3.5)
+	const minutes = Math.ceil(workout.exercise.length * 3.5)
 
 	res.json({ ...workout, minutes })
 }

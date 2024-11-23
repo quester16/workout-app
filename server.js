@@ -10,7 +10,6 @@ import userRoutes from './app/user/user.routes.js'
 import workoutRoutes from './app/workout/workout.routes.js'
 
 dotenv.config()
-
 const app = express()
 
 async function main() {

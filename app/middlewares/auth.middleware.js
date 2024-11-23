@@ -7,21 +7,24 @@ const authProtect = async (req, res, next) => {
 	if (req.headers.authorization?.startsWith('Bearer')) {
 		token = req.headers.authorization.split(' ')[1]
 	}
+	console.log(token)
 	if (token) {
-		const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
+		try {
+			const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
 
-		const user = await prisma.user.findUnique({
-			where: {
-				id: decodedToken.id
-			},
-			select: UserFields
-		})
+			const user = await prisma.user.findUnique({
+				where: { id: decodedToken.id },
+				select: UserFields
+			})
 
-		if (user) {
-			req.user = user
-			next()
-		} else {
-			res.status(401).send('user not found')
+			if (user) {
+				req.user = user
+				next()
+			} else {
+				res.status(401).send('User not found')
+			}
+		} catch (err) {
+			res.status(401).send('Token verification failed: ' + err.message)
 		}
 	} else {
 		res.status(401).send('access error, token failed')

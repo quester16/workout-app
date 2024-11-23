@@ -23,7 +23,7 @@ export const getExercises = async (req, res) => {
 				userId: req.user.id
 			},
 			include: {
-				exerciseSet: true,
+				exerciseLog: true,
 				user: {
 					select: UserFields
 				}

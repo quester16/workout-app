@@ -38,36 +38,47 @@ model Exercise{
   sets Int
   exerciseType String? @map("exercise_type")
 
-  exerciseSet ExerciseSet[]
+  exerciseLog ExerciseLog[] // Связь с мостовой таблицей
   workouts Workout[]
-
   // Внешний ключ на пользователя и связь
   userId       Int
   user         User        @relation(fields: [userId], references: [id])
+
 }
 
 model Workout{
-  id Int @id  @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("upadated_at")
+  id          Int           @id @default(autoincrement())
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
 
-  name String
-  
-  exercises Exercise[]
-  // Внешний ключ на пользователя и связь
-  userId     Int
-  user       User       @relation(fields: [userId], references: [id])
+  name        String
+  isCompleted Boolean       @default(false) // Завершение всей тренировки
+  exercise Exercise[]
+
+  userId      Int
+  user        User          @relation(fields: [userId], references: [id])
+
+  exerciseLog   ExerciseLog[]
 }
 
+model ExerciseLog {
+  id          Int           @id @default(autoincrement())
+  workoutId   Int
+
+  workout     Workout       @relation(fields: [workoutId], references: [id])
+
+  exerciseId  Int
+  exercise    Exercise      @relation(fields: [exerciseId], references: [id])
+
+  isCompleted Boolean       @default(false) // Выполнение упражнения в рамках тренировки
+  sets        ExerciseSet[]
+}
 
 model ExerciseSet{
-  id Int @id  @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("upadated_at")
+  id              Int           @id @default(autoincrement())
+  weight          Int
+  repetitions     Int
 
-  weight Int
-  repeat Int
-
-  exerciseId Int
-  exercise Exercise @relation(fields: [exerciseId], references: [id])
+  exerciseLog ExerciseLog @relation(fields: [exerciseLogId], references: [id])
+  exerciseLogId Int
 }

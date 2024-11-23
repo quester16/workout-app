@@ -25,8 +25,7 @@ export const createExerciseSet = async (req, res) => {
 	const exerciseSet = await prisma.exerciseSet.createMany({
 		data: sets.map(set => ({
 			repeat: set.repeat, // маппим данные из запроса
-			weight: set.weight,
-			exerciseId: exerciseId // связываем с упражнением
+			weight: set.weight
 		}))
 	})
 
