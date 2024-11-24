@@ -3,11 +3,9 @@ import dotenv from 'dotenv'
 import express from 'express'
 import morgan from 'morgan'
 import authRoutes from './app/auth/auth.routes.js'
-import exerciseRoutes from './app/exercise/exercise.routes.js'
 import { errorHandler, notFound } from './app/middlewares/error.middleware.js'
 import { prisma } from './app/prisma.js'
-import userRoutes from './app/user/user.routes.js'
-import workoutRoutes from './app/workout/workout.routes.js'
+import allRoutes from './app/temp/routes/routes.js'
 
 dotenv.config()
 const app = express()
@@ -19,9 +17,10 @@ async function main() {
 	app.use(express.json())
 	app.use(express.urlencoded({ extended: true }))
 	app.use('/api/auth', authRoutes)
-	app.use('/api/user', userRoutes)
-	app.use('/api/exercise', exerciseRoutes)
-	app.use('/api/workout', workoutRoutes)
+	// app.use('/api/user', userRoutes)
+	// app.use('/api/exercise', exerciseRoutes)
+	// app.use('/api/workout', workoutRoutes)
+	app.use('/api/', allRoutes)
 
 	app.use(notFound)
 	app.use(errorHandler)

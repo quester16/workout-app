@@ -12,73 +12,163 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+//
+// model User{
+//   id Int @id  @default(autoincrement())
+//   createdAt DateTime @default(now()) @map("created_at")
+//   updatedAt DateTime @updatedAt @map("upadated_at")
+//
+//   email String @unique
+//   name  String
+//   password String
+//   images String[]
+//
+//   // Добавляем отношение к упражнениям
+//   exercises  Exercise[]
+//   // Связь с тренировками
+//   workouts   Workout[]
+// }
+//
+// model Exercise{
+//   id Int @id  @default(autoincrement())
+//   createdAt DateTime @default(now()) @map("created_at")
+//   updatedAt DateTime @updatedAt @map("upadated_at")
+//
+//   name String @unique
+//   sets Int
+//   exerciseType String? @map("exercise_type")
+//
+//   exerciseLog ExerciseLog[] // Связь с мостовой таблицей
+//   workouts Workout[]
+//   // Внешний ключ на пользователя и связь
+//   userId       Int
+//   user         User        @relation(fields: [userId], references: [id])
+//
+// }
+//
+// model Workout{
+//   id          Int           @id @default(autoincrement())
+//   createdAt   DateTime      @default(now())
+//   updatedAt   DateTime      @updatedAt
+//
+//   name        String
+//   isCompleted Boolean       @default(false) // Завершение всей тренировки
+//   exercise Exercise[]
+//
+//   userId      Int
+//   user        User          @relation(fields: [userId], references: [id])
+//
+//   exerciseLog   ExerciseLog[]
+// }
+//
+// model ExerciseLog {
+//   id          Int           @id @default(autoincrement())
+//   workoutId   Int
+//
+//   workout     Workout       @relation(fields: [workoutId], references: [id])
+//
+//   exerciseId  Int
+//   exercise    Exercise      @relation(fields: [exerciseId], references: [id])
+//
+//   isCompleted Boolean       @default(false) // Выполнение упражнения в рамках тренировки
+//   sets        ExerciseSet[]
+// }
+//
+// model ExerciseSet{
+//   id              Int           @id @default(autoincrement())
+//   weight          Int
+//   repetitions     Int
+//
+//   exerciseLog ExerciseLog @relation(fields: [exerciseLogId], references: [id])
+//   exerciseLogId Int
+// }
 
-model User{
-  id Int @id  @default(autoincrement())
+model User {
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("upadated_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-  email String @unique
-  name  String
+  email    String   @unique
+  name     String
   password String
-  images String[]
+  images   String[]
 
-  // Добавляем отношение к упражнениям
-  exercises  Exercise[]
-  // Связь с тренировками
-  workouts   Workout[]
+  exerciseLogs ExerciseLog[]
+  workoutLogs  WorkoutLog[]
 }
 
-model Exercise{
-  id Int @id  @default(autoincrement())
+model Workout {
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("upadated_at")
-
-  name String @unique
-  sets Int
-  exerciseType String? @map("exercise_type")
-
-  exerciseLog ExerciseLog[] // Связь с мостовой таблицей
-  workouts Workout[]
-  // Внешний ключ на пользователя и связь
-  userId       Int
-  user         User        @relation(fields: [userId], references: [id])
-
-}
-
-model Workout{
-  id          Int           @id @default(autoincrement())
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   name        String
-  isCompleted Boolean       @default(false) // Завершение всей тренировки
-  exercise Exercise[]
+  exercises   Exercise[]
+  workoutLogs WorkoutLog[]
+}
 
-  userId      Int
-  user        User          @relation(fields: [userId], references: [id])
+model Exercise {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-  exerciseLog   ExerciseLog[]
+  name     String
+  times    Int
+
+  workouts Workout[]
+
+  exerciseLogs ExerciseLog[]
 }
 
 model ExerciseLog {
-  id          Int           @id @default(autoincrement())
-  workoutId   Int
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-  workout     Workout       @relation(fields: [workoutId], references: [id])
+  isCompleted Boolean        @default(false) @map("is_completed")
+  times       ExerciseSets[]
 
-  exerciseId  Int
-  exercise    Exercise      @relation(fields: [exerciseId], references: [id])
+  user   User? @relation(fields: [userId], references: [id])
+  userId Int?  @map("user_id")
 
-  isCompleted Boolean       @default(false) // Выполнение упражнения в рамках тренировки
-  sets        ExerciseSet[]
+  workoutLog   WorkoutLog? @relation(fields: [workoutLogId], references: [id])
+  workoutLogId Int?        @map("workout_log_id")
+
+  exercise   Exercise? @relation(fields: [exerciseId], references: [id])
+  exerciseId Int?      @map("exercise_id")
+
+  @@map("Exercise_log")
 }
 
-model ExerciseSet{
-  id              Int           @id @default(autoincrement())
-  weight          Int
-  repetitions     Int
+model ExerciseSets{
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-  exerciseLog ExerciseLog @relation(fields: [exerciseLogId], references: [id])
-  exerciseLogId Int
+  weight      Int     @default(0)
+  repeat      Int     @default(0)
+  isCompleted Boolean @default(false) @map("is_completed")
+
+  exerciseLog   ExerciseLog? @relation(fields: [exerciseLogId], references: [id])
+  exerciseLogId Int?         @map("exercise_log_id")
+
+  @@map("Exercise_time")
+}
+
+model WorkoutLog {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  isCompleted Boolean @default(false) @map("is_completed")
+
+  exerciseLogs ExerciseLog[]
+
+  user   User? @relation(fields: [userId], references: [id])
+  userId Int?  @map("user_id")
+
+  workout   Workout? @relation(fields: [workoutId], references: [id])
+  workoutId Int?     @map("workout_id")
+
+  @@map("Workout_log")
 }
