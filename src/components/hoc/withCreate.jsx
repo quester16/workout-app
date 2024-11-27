@@ -10,13 +10,21 @@ import style from './withCreate.module.scss'
 const withCreate = (WrappedComponent, type) => {
 	// eslint-disable-next-line react/display-name
 	return function () {
-		const { createExercise, errors, handleSubmit, register, control, onError } =
-			useWithCreate(type)
-
+		const {
+			createExercise,
+			errors,
+			handleSubmit,
+			register,
+			control,
+			onError,
+			isSuccess
+		} = useWithCreate(type)
+		console.log(isSuccess)
 		const toRender = () => {
 			return (
 				<div className={style.profileContainer}>
 					{onError && <Notification type={type} success={false} />}
+					{isSuccess && <Notification type={type} success={true} />}
 					<form className={style.form} onSubmit={handleSubmit(createExercise)}>
 						<Input
 							register={register}

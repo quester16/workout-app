@@ -1,17 +1,9 @@
-import { useQuery } from '@tanstack/react-query'
-import { useNavigate } from 'react-router-dom'
-import WorkoutService from '../../../../services/workout.service.js'
 import Layout from '../../../layout/Layout.jsx'
+import { useWorkoutList } from './useWorkoutList.js'
 import style from './WorkoutList.module.scss'
 
 export const WorkoutList = () => {
-	const navigate = useNavigate()
-
-	const { data } = useQuery({
-		queryKey: ['workout-list'],
-		queryFn: () => WorkoutService.getAllWorkouts(),
-		select: ({ data }) => data
-	})
+	const { handleClick, data } = useWorkoutList()
 
 	return (
 		<Layout>
@@ -21,7 +13,7 @@ export const WorkoutList = () => {
 					<div
 						key={workout.id}
 						className={style.workout_card}
-						onClick={() => navigate('/workout/' + workout.id)}
+						onClick={() => handleClick(workout.id)}
 					>
 						<div className={style.title}>{workout.name}</div>
 					</div>

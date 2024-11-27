@@ -1,22 +1,12 @@
-import { useQuery } from '@tanstack/react-query'
-import { useDispatch } from 'react-redux'
-import { useNavigate, useParams } from 'react-router-dom'
-import WorkoutService from '../../../../services/workout.service.js'
+import { useNavigate } from 'react-router-dom'
 import Layout from '../../../layout/Layout.jsx'
 import style from './SingleWorkout.module.scss'
+import { useSingleWorkout } from './useSingleWorkout.js'
 
 export const SingleWorkout = () => {
-	const { id } = useParams()
 	const navigate = useNavigate()
-	const dispatch = useDispatch()
 
-	const { data } = useQuery({
-		queryKey: ['exercise-log'],
-		queryFn: () => WorkoutService.getOneWorkout(id),
-		select: ({ data }) => data
-	})
-
-	// if(data.)
+	const { data } = useSingleWorkout()
 
 	return (
 		<Layout>
@@ -25,7 +15,7 @@ export const SingleWorkout = () => {
 					<div className={style.min}>{data?.minutes} minutes</div>
 					{data?.name}
 				</div>
-				{data?.exercise.map(ex => (
+				{data?.exercises.map(ex => (
 					<div
 						className={style.exercise_card}
 						key={ex.id}

@@ -16,7 +16,7 @@ export const useWithCreate = props => {
 	})
 	const [onError, setOnError] = useState(false)
 
-	const { mutate } = useMutation({
+	const { mutate, isSuccess } = useMutation({
 		mutationFn: data =>
 			props === 'workout'
 				? WorkoutService.createWorkout(data)
@@ -42,7 +42,7 @@ export const useWithCreate = props => {
 		} else {
 			mutate({
 				name: data.name,
-				sets: data.sets,
+				times: data.sets,
 				exerciseType: data.select.label
 			})
 		}
@@ -58,6 +58,7 @@ export const useWithCreate = props => {
 		register,
 		handleSubmit,
 		control,
-		onError
+		onError,
+		isSuccess
 	}
 }

@@ -4,7 +4,9 @@ class ExerciseService {
 	getAllExercises() {
 		return caxios.get('/exercise')
 	}
-
+	postExerciseLog(data) {
+		return caxios.post(`/exercise/log`, data)
+	}
 	createExercise(data) {
 		return caxios.post('/exercise', data)
 	}

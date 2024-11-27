@@ -7,7 +7,10 @@ export const useExerciseLog = () => {
 	const { id } = useParams()
 
 	const { mutate } = useMutation({
-		mutationFn: data => ExerciseService.createLogExercise(data, id),
+		mutationFn: data => {
+			ExerciseService.createLogExercise(data, id)
+			ExerciseService.createLogExercise(id)
+		},
 		onSuccess: () => {
 			// navigate(`/workout/${id}`)
 		}
@@ -22,10 +25,10 @@ export const useExerciseLog = () => {
 					: arr[i].weight
 		}))
 		mutate(newData)
-		console.log(newData)
-		setSets(prev =>
-			prev.map((_, index) => ({ id: index, repeat: 0, weight: 0 }))
-		)
+
+		// setSets(prev =>
+		// 	prev.map((_, index) => ({ id: index, repeat: 0, weight: 0 }))
+		// )
 	}
 	return {
 		handleCreateExerciseLog
