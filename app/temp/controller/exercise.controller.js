@@ -3,9 +3,12 @@ import { prisma } from '../../prisma.js'
 export const getExercise = async (req, res) => {
 	const exerciseId = +req.params.exerciseId
 
-	console.log(exerciseId)
 	try {
-		const exercises = await prisma.exercise.findMany()
+		const exercises = await prisma.exercise.findMany({
+			include: {
+				exerciseLogs: true
+			}
+		})
 		res.status(200).json(exercises)
 	} catch (err) {
 		res.status(400).json({ error: err.message })

@@ -20,7 +20,13 @@ export const getWorkoutDetails = async (req, res) => {
 	try {
 		const workout = await prisma.workout.findUnique({
 			where: { id: workoutId },
-			include: { exercises: true }
+			include: {
+				exercises: {
+					include: {
+						exerciseLogs: true
+					}
+				}
+			}
 		})
 		if (!workout) {
 			return res.status(404).json({ message: 'Workout not found' })
@@ -33,16 +39,35 @@ export const getWorkoutDetails = async (req, res) => {
 
 // Создать лог тренировки
 export const createWorkoutLog = async (req, res) => {
-	const { userId, workoutId } = req.body
+	const workoutId = req.body.id
+	const userId = req.user.id
+
 	try {
-		const workoutLog = await prisma.workoutLog.create({
-			data: {
-				workoutId
+		// Проверить, есть ли активный WorkoutLog для пользователя и тренировки
+		let workoutLog = await prisma.workoutLog.findFirst({
+			where: {
+				workoutId,
+				userId: userId,
+				isCompleted: false // Если лог еще не завершен
 			}
 		})
-		res.json(workoutLog)
+
+		// Если не найдено, создаем новый WorkoutLog
+		if (!workoutLog) {
+			workoutLog = await prisma.workoutLog.create({
+				data: {
+					workoutId: workoutId,
+					userId: userId
+				}
+			})
+		}
+
+		res.status(200).json(workoutLog)
 	} catch (error) {
-		res.status(500).json({ error: 'Failed to create workout log' })
+		res.status(500).json({
+			error: 'Ошибка при создании или поиске WorkoutLog',
+			text: error.message
+		})
 	}
 }
 
@@ -60,15 +85,15 @@ export const completeWorkoutLog = async (req, res) => {
 	}
 }
 
+//создать тренировку
 export const createWorkout = async (req, res) => {
-	const { name, exercises } = req.body // Получаем данные из body
-
+	const { name, exerciseIds } = req.body // Получаем данные из body
 	try {
 		const workout = await prisma.workout.create({
 			data: {
 				name,
 				exercises: {
-					connect: exercises.map(id => ({ id })) // Привязываем упражнения через их ID
+					connect: exerciseIds.map(id => ({ id })) // Привязываем упражнения через их ID
 				}
 			},
 			include: {
@@ -77,6 +102,8 @@ export const createWorkout = async (req, res) => {
 		})
 		res.status(201).json(workout)
 	} catch (error) {
-		res.status(500).json({ error: 'Failed to create workout' })
+		res
+			.status(500)
+			.json({ error: 'Failed to create workout', text: error.message })
 	}
 }

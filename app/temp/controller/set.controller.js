@@ -5,6 +5,7 @@ export const createExerciseSet = async (req, res) => {
 	const logId = +req.params.logId // ID лога упражнения
 	const sets = req.body // Массив с подходами [{ weight, repeat }, ...]
 
+	console.log(req.body, logId)
 	try {
 		// Удаляем старые подходы (если они есть)
 		await prisma.exerciseSets.deleteMany({
@@ -28,6 +29,8 @@ export const createExerciseSet = async (req, res) => {
 
 		res.json(createdSets)
 	} catch (error) {
-		res.status(500).json({ error: 'Failed to create exercise sets' })
+		res
+			.status(500)
+			.json({ error: 'Failed to create exercise sets', text: error.message })
 	}
 }
