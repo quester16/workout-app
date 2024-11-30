@@ -21,6 +21,7 @@ export const getWorkoutDetails = async (req, res) => {
 		const workout = await prisma.workout.findUnique({
 			where: { id: workoutId },
 			include: {
+				workoutLogs: true,
 				exercises: {
 					include: {
 						exerciseLogs: true

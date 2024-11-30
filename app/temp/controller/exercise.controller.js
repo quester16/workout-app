@@ -6,7 +6,14 @@ export const getExercise = async (req, res) => {
 	try {
 		const exercises = await prisma.exercise.findMany({
 			include: {
-				exerciseLogs: true
+				exerciseLogs: {
+					select: {
+						id: true,
+						userId: true,
+						isCompleted: true,
+						times: true
+					}
+				}
 			}
 		})
 		res.status(200).json(exercises)
@@ -19,31 +26,51 @@ export const getExercise = async (req, res) => {
 export const createExerciseLog = async (req, res) => {
 	const { workoutLogId, exerciseId } = req.body
 
+	// Получаем текущую дату без времени
+	const today = new Date()
+	today.setHours(0, 0, 0, 0)
+
 	// Проверяем, существует ли workoutLog и exercise
 	try {
 		const workoutLog = await prisma.workoutLog.findUnique({
-			where: { id: workoutLogId }
+			where: { id: +workoutLogId }
 		})
 
 		const exercise = await prisma.exercise.findUnique({
-			where: { id: exerciseId }
+			where: { id: +exerciseId }
 		})
-		console.log(workoutLog, exercise)
 		if (!workoutLog || !exercise) {
 			return res
 				.status(400)
 				.json({ error: 'Invalid workoutLogId or exerciseId' })
 		}
 
-		// Создаем ExerciseLog, если все проверки прошли успешно
-		const exerciseLog = await prisma.exerciseLog.create({
-			data: {
+		const exerciseLog = await prisma.exerciseLog.findFirst({
+			where: {
 				workoutLogId,
-				exerciseId
+				exerciseId,
+				createdAt: {
+					gte: today,
+					lt: new Date(today.getTime() + 24 * 60 * 60 * 1000) // До конца текущего дня
+				},
+				isCompleted: false
 			}
 		})
+		if (exerciseLog) {
+			console.log('лог уже существует')
+			res.json(exerciseLog)
+		} else {
+			// Создаем ExerciseLog, если все проверки прошли успешно
+			const exerciseLog = await prisma.exerciseLog.create({
+				data: {
+					workoutLogId: parseInt(workoutLogId),
+					exerciseId: parseInt(exerciseId)
+				}
+			})
 
-		res.json(exerciseLog)
+			res.json(exerciseLog)
+			console.log(exerciseLog.createdAt, 'today:', today)
+		}
 	} catch (error) {
 		res.status(500).json({ error: error.message })
 	}
