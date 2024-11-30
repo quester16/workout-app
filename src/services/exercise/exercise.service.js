@@ -4,9 +4,6 @@ class ExerciseService {
 	getAllExercises() {
 		return caxios.get('/exercise')
 	}
-	postExerciseLog(data) {
-		return caxios.post(`/exercise/log`, data)
-	}
 	createExercise(data) {
 		return caxios.post('/exercise', data)
 	}
@@ -16,10 +13,18 @@ class ExerciseService {
 	deleteExercise(id) {
 		return caxios.delete(`/exercise/${id}`)
 	}
-	// get exercise log
-	createLogExercise(data, id) {
-		console.log(data, id)
-		return caxios.post(`/exercise/set/${id}`, data)
+	// create exercise log
+	createLogExercise(data) {
+		console.log(data)
+		return caxios.post(`/exercise/log`, {
+			workoutLogId: +data.workoutLogId,
+			exerciseId: +data.data
+		})
+	}
+
+	createSets(data) {
+		console.log(data)
+		return caxios.post(`/exercise/set/${data.id}`, data.data)
 	}
 }
 

@@ -28,7 +28,7 @@ export const Auth = () => {
 				<div className={style.loader} style={{ opacity: isPending ? 1 : 0 }}>
 					<Loader />
 				</div>
-				{onError && <Notification success={false} type={'auth'} />}
+				{onError && <Notification success={false} isAuth={true} />}
 				<Input
 					register={register}
 					errors={errors?.email?.message}

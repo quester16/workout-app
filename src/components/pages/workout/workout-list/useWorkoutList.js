@@ -10,16 +10,20 @@ export const useWorkoutList = () => {
 		queryFn: () => WorkoutService.getAllWorkouts(),
 		select: ({ data }) => data
 	})
-	const { mutate } = useMutation({
-		mutationFn: id => WorkoutService.createWorkoutLog(id)
+	const { mutate, error } = useMutation({
+		mutationFn: id => WorkoutService.createWorkoutLog(id),
+		onSuccess: workout => {
+			navigate('/workout/' + workout.data.workoutId)
+		}
 	})
+
 	const handleClick = id => {
-		navigate('/workout/' + id)
 		mutate({ id })
 	}
 
 	return {
 		handleClick,
-		data
+		data,
+		error
 	}
 }

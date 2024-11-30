@@ -12,8 +12,6 @@ export const ExerciseLogRows = ({ index, currentExercise, setSets, sets }) => {
 		)
 	}
 
-	console.log(sets)
-
 	return (
 		<div className={style.action_row} key={index}>
 			<div>

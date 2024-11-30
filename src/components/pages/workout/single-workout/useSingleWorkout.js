@@ -1,12 +1,14 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useDispatch } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { setWorkout } from '../../../../redux/slices/workoutSlice.js'
+import ExerciseService from '../../../../services/exercise/exercise.service.js'
 import WorkoutService from '../../../../services/workout.service.js'
 
 export const useSingleWorkout = () => {
 	const dispatch = useDispatch()
 	const { id } = useParams()
+	const navigate = useNavigate()
 
 	const { data } = useQuery({
 		queryKey: ['exercise-log'],
@@ -14,8 +16,26 @@ export const useSingleWorkout = () => {
 		select: ({ data }) => data
 	})
 	dispatch(setWorkout(data))
+	let workoutLogId = data?.workoutLogs[0].id
+
+	const { mutate } = useMutation({
+		mutationFn: data =>
+			ExerciseService.createLogExercise({ data, workoutLogId }),
+		onSuccess: data => {
+			navigate('/exercise/' + data.data.exerciseId)
+		}
+	})
+
+	const handleMutate = (exId, isCompleted) => {
+		console.log(isCompleted)
+		if (isCompleted) {
+			mutate(exId)
+			// navigate('/exercise/' + exId)
+		} else mutate(exId)
+	}
 
 	return {
-		data
+		data,
+		handleMutate
 	}
 }

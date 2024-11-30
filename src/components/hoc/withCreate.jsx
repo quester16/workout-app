@@ -23,8 +23,15 @@ const withCreate = (WrappedComponent, type) => {
 		const toRender = () => {
 			return (
 				<div className={style.profileContainer}>
-					{onError && <Notification type={type} success={false} />}
-					{isSuccess && <Notification type={type} success={true} />}
+					{onError && (
+						<Notification
+							message={'Не удалось добавить повторите после перезагрузки!'}
+							success={false}
+						/>
+					)}
+					{isSuccess && (
+						<Notification message={'Успешно добавлено!'} success={true} />
+					)}
 					<form className={style.form} onSubmit={handleSubmit(createExercise)}>
 						<Input
 							register={register}

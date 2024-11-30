@@ -13,7 +13,7 @@ export const ExerciseLog = () => {
 	const { id } = useParams()
 	const { handleCreateExerciseLog } = useExerciseLog()
 
-	const { data: exerciseLog, isLoading } = useQuery({
+	const { data: exercise, isLoading } = useQuery({
 		queryKey: ['get log', id],
 		queryFn: () => ExerciseService.getAllExercises(),
 		select: ({ data }) => data
@@ -24,13 +24,13 @@ export const ExerciseLog = () => {
 
 	// 3. useEffect для инициализации данных из localStorage или exercises
 	useEffect(() => {
-		if (!exerciseLog || !exerciseLog) return // Проверка наличия данных
+		if (!exercise || !exercise) return // Проверка наличия данных
 
-		const savedValues = JSON.parse(localStorage.getItem(exerciseLog[id - 1].id))
+		const savedValues = JSON.parse(localStorage.getItem(exercise[id - 1].id))
 		if (savedValues && Array.isArray(savedValues)) {
 			setSets(savedValues)
 		} else {
-			const currentExercise = exerciseLog.find(exer => exer.id === +id)
+			const currentExercise = exercise.find(exer => exer.id === +id)
 			console.log('cur', currentExercise)
 
 			if (currentExercise) {
@@ -44,12 +44,12 @@ export const ExerciseLog = () => {
 				setSets(initialSets) // Устанавливаем начальные данные
 			}
 		}
-	}, [exerciseLog, id])
+	}, [exercise, id])
 
 	// 4. useEffect для сохранения в localStorage при изменении sets
 	useEffect(() => {
 		if (sets && sets.length > 0) {
-			localStorage.setItem(exerciseLog[id - 1].id, JSON.stringify(sets))
+			localStorage.setItem(exercise[id - 1].id, JSON.stringify(sets))
 		}
 	}, [sets])
 
@@ -58,12 +58,12 @@ export const ExerciseLog = () => {
 		return <Loader />
 	}
 
-	if (!exerciseLog || !exerciseLog) {
+	if (!exercise || !exercise) {
 		console.warn('No exercise found')
 		return <p>No exercises found</p>
 	}
 
-	const currentExercise = exerciseLog.find(exer => exer.id === +id)
+	const currentExercise = exercise.find(exer => exer.id === +id)
 	if (!currentExercise) {
 		console.warn('Exercise not found')
 		return <p>Exercise not found</p>
@@ -82,7 +82,9 @@ export const ExerciseLog = () => {
 			)
 		})
 	}
-
+	let exerciseLogId = exercise[id - 1].exerciseLogs.slice(-1)[0].id
+	let isCompleted = exercise[id - 1].exerciseLogs.slice(-1)[0].isCompleted
+	console.log(isCompleted)
 	return (
 		<Layout>
 			<div className={style.container}>
@@ -103,12 +105,16 @@ export const ExerciseLog = () => {
 					{generateActionRow()}
 				</div>
 				<div className={style.complete}>
-					<Button
-						type={'primary'}
-						handleClick={() => handleCreateExerciseLog({ sets }, setSets)}
-					>
-						Сохранить
-					</Button>
+					{!isCompleted && (
+						<Button
+							type={'primary'}
+							handleClick={() =>
+								handleCreateExerciseLog({ sets, id: exerciseLogId }, setSets)
+							}
+						>
+							Сохранить
+						</Button>
+					)}
 				</div>
 			</div>
 		</Layout>
