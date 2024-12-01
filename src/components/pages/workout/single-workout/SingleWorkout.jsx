@@ -11,7 +11,6 @@ export const SingleWorkout = () => {
 			<div className={style.container}>
 				<div className={style.header_title}>
 					<div className={style.min}>{data?.minutes} minutes</div>
-
 					{data?.name}
 				</div>
 				{data?.exercises.map(ex => {

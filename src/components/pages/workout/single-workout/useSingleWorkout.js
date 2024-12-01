@@ -16,6 +16,7 @@ export const useSingleWorkout = () => {
 		select: ({ data }) => data
 	})
 	dispatch(setWorkout(data))
+
 	let workoutLogId = data?.workoutLogs[0].id
 
 	const { mutate } = useMutation({
@@ -27,10 +28,8 @@ export const useSingleWorkout = () => {
 	})
 
 	const handleMutate = (exId, isCompleted) => {
-		console.log(isCompleted)
 		if (isCompleted) {
-			mutate(exId)
-			// navigate('/exercise/' + exId)
+			navigate('/exercise/' + exId)
 		} else mutate(exId)
 	}
 

@@ -11,7 +11,6 @@ class WorkoutService {
 		return caxios.post('/workout', data)
 	}
 	createWorkoutLog(data) {
-		console.log(data)
 		return caxios.post('/workout/log', data)
 	}
 	updateWorkout(id, data) {
