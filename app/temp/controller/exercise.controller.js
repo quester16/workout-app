@@ -1,8 +1,6 @@
 import { prisma } from '../../prisma.js'
 
 export const getExercise = async (req, res) => {
-	const exerciseId = +req.params.exerciseId
-
 	try {
 		const exercises = await prisma.exercise.findMany({
 			include: {
@@ -112,6 +110,42 @@ export const createExercise = async (req, res) => {
 			}
 		})
 		res.status(201).json(exercise)
+	} catch (error) {
+		res.status(500).json({ error: error.message })
+	}
+}
+
+//get completed exercises
+export const getCompletedExericises = async (req, res) => {
+	const id = +req.params.id
+	try {
+		const workout = await prisma.workout.findFirst({
+			where: {
+				id
+			},
+			include: {
+				workoutLogs: {
+					select: {
+						workoutId: true
+					}
+				},
+				exercises: {
+					include: {
+						exerciseLogs: true
+					}
+				}
+			}
+		})
+
+		const isCompleted = {}
+		workout.exercises.forEach(ex => {
+			ex.exerciseLogs.forEach(log => {
+				isCompleted[ex.name] =
+					log.workoutLogId === workout.workoutLogs.slice(-1)[0].workoutId
+			})
+		})
+		console.log(isCompleted)
+		res.json(isCompleted)
 	} catch (error) {
 		res.status(500).json({ error: error.message })
 	}

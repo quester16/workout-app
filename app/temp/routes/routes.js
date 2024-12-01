@@ -17,7 +17,8 @@ const {
 	createExerciseLog,
 	completeExerciseLog,
 	createExercise,
-	getExercise
+	getExercise,
+	getCompletedExericises
 } = exerciseController
 const { createExerciseSet } = setcontroller
 
@@ -34,6 +35,7 @@ router.get('/exercise', getExercise)
 router.post('/exercise/log', createExerciseLog)
 router.patch('/exercise/log/:id/complete', completeExerciseLog)
 router.post('/exercise', createExercise)
+router.get('/exercises/completed/:id', getCompletedExericises)
 
 // Exercise sets routes
 router.post('/exercise/set/:logId', createExerciseSet)
