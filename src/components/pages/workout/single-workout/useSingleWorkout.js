@@ -10,16 +10,22 @@ export const useSingleWorkout = () => {
 	const { id } = useParams()
 	const navigate = useNavigate()
 
-	const { data } = useQuery({
+	const workout = useQuery({
 		queryKey: ['exercise-log'],
 		queryFn: () => WorkoutService.getOneWorkout(id),
 		select: ({ data }) => data
 	})
-	dispatch(setWorkout(data))
+	dispatch(setWorkout(workout.data))
+	let workoutLogId = workout?.data?.workoutLogs.slice(-1)[0].id
 
-	let workoutLogId = data?.workoutLogs[0].id
+	const isCompleted = useQuery({
+		queryKey: ['exercise completed flag'],
+		queryFn: () => ExerciseService.getIsCompletedExercise(workoutLogId),
+		select: ({ data }) => data,
+		enabled: !!workoutLogId
+	})
 
-	const { mutate } = useMutation({
+	const { mutate: createLogExercise } = useMutation({
 		mutationFn: data =>
 			ExerciseService.createLogExercise({ data, workoutLogId }),
 		onSuccess: data => {
@@ -27,14 +33,30 @@ export const useSingleWorkout = () => {
 		}
 	})
 
+	const { mutate: completeWorkout } = useMutation({
+		mutationFn: data => WorkoutService.completeWorkout(data),
+		onSuccess: () => {
+			navigate('/workouts')
+		}
+	})
+
 	const handleMutate = (exId, isCompleted) => {
+		console.log(isCompleted)
 		if (isCompleted) {
 			navigate('/exercise/' + exId)
-		} else mutate(exId)
+		} else createLogExercise(exId)
+	}
+
+	const handleCompleteWorkout = workoutLogId => {
+		if (isCompleted.data[0] === true && !isCompleted.data[1] === true) {
+			completeWorkout(workoutLogId)
+		} else alert('завершите упражнение')
 	}
 
 	return {
-		data,
-		handleMutate
+		isCompleted,
+		workout,
+		handleMutate,
+		handleCompleteWorkout
 	}
 }

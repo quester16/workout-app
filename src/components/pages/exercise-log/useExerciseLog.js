@@ -11,7 +11,7 @@ export const useExerciseLog = () => {
 			ExerciseService.createSets(data)
 		},
 		onSuccess: () => {
-			// navigate(`/workout/${id}`)
+			navigate(`/workout/${id}`)
 		}
 	})
 

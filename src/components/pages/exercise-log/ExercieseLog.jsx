@@ -26,7 +26,9 @@ export const ExerciseLog = () => {
 	useEffect(() => {
 		if (!exercise || !exercise) return // Проверка наличия данных
 
-		const savedValues = JSON.parse(localStorage.getItem(exercise[id - 1].id))
+		const savedValues = JSON.parse(
+			localStorage.getItem(exercise?.find(exer => exer.id === +id).name)
+		)
 		if (savedValues && Array.isArray(savedValues)) {
 			setSets(savedValues)
 		} else {
@@ -49,7 +51,10 @@ export const ExerciseLog = () => {
 	// 4. useEffect для сохранения в localStorage при изменении sets
 	useEffect(() => {
 		if (sets && sets.length > 0) {
-			localStorage.setItem(exercise[id - 1].id, JSON.stringify(sets))
+			localStorage.setItem(
+				exercise?.find(exer => exer.id === +id).name,
+				JSON.stringify(sets)
+			)
 		}
 	}, [sets])
 
@@ -82,9 +87,9 @@ export const ExerciseLog = () => {
 			)
 		})
 	}
-	let exerciseLogId = exercise[id - 1].exerciseLogs.slice(-1)[0].id
-	let isCompleted = exercise[id - 1].exerciseLogs.slice(-1)[0].isCompleted
-	console.log(isCompleted)
+	let exerciseLogId = currentExercise.exerciseLogs.slice(-1)[0].id
+	let isCompleted = currentExercise.exerciseLogs.slice(-1)[0].isCompleted
+
 	return (
 		<Layout>
 			<div className={style.container}>

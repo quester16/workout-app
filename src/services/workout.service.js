@@ -13,8 +13,8 @@ class WorkoutService {
 	createWorkoutLog(data) {
 		return caxios.post('/workout/log', data)
 	}
-	updateWorkout(id, data) {
-		return caxios.put(`/workout/${id}`, data)
+	completeWorkout(id) {
+		return caxios.patch(`/workout/log/${id}/complete`)
 	}
 	deleteWorkout(id) {
 		return caxios.delete(`/workout/${id}`)

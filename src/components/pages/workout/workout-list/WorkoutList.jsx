@@ -10,8 +10,7 @@ export const WorkoutList = () => {
 		<Layout>
 			<div className={style.container}>
 				<div className={style.header_title}>Список тренировок</div>
-				{error &
-				(
+				{error && (
 					<Notification
 						message={
 							'Произошла ошибка при получении тренировки, пожалуйста перезагрузите сайт!'
