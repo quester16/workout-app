@@ -1,16 +1,21 @@
-import { prisma } from '../../prisma.js'
+import { prisma } from '../prisma.js'
 
 // Получить список тренировок
 export const getWorkouts = async (req, res) => {
 	try {
 		const workouts = await prisma.workout.findMany({
+			where: {
+				userId: req.user.id
+			},
 			include: {
 				exercises: true
 			}
 		})
 		res.json(workouts)
 	} catch (error) {
-		res.status(500).json({ error: 'Failed to fetch workouts' })
+		res
+			.status(500)
+			.json({ error: 'Failed to fetch workouts', msg: error.message })
 	}
 }
 
@@ -22,6 +27,7 @@ export const getWorkoutDetails = async (req, res) => {
 			where: { id: workoutId },
 			include: {
 				workoutLogs: true,
+
 				exercises: {
 					include: {
 						exerciseLogs: true
@@ -74,10 +80,11 @@ export const createWorkoutLog = async (req, res) => {
 
 // Завершить тренировку
 export const completeWorkoutLog = async (req, res) => {
-	const logId = +req.params.id
+	const workoutLogId = +req.params.id
+	console.log(workoutLogId)
 	try {
 		const workoutLog = await prisma.workoutLog.update({
-			where: { id: logId },
+			where: { id: workoutLogId },
 			data: { isCompleted: true }
 		})
 		res.json(workoutLog)
@@ -95,7 +102,8 @@ export const createWorkout = async (req, res) => {
 				name,
 				exercises: {
 					connect: exerciseIds.map(id => ({ id })) // Привязываем упражнения через их ID
-				}
+				},
+				userId: req.user.id
 			},
 			include: {
 				exercises: true // Чтобы в ответе получить детали привязанных упражнений

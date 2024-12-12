@@ -1,11 +1,9 @@
-import { prisma } from '../../prisma.js'
+import { prisma } from '../prisma.js'
 
 // Создать подходы для упражнения
 export const createExerciseSet = async (req, res) => {
 	const exerciseLogId = +req.params.logId // ID лога упражнения
 	const sets = req.body // Массив с подходами [{ weight, repeat }, ...]
-
-	console.log(req.body)
 
 	try {
 		// Удаляем старые подходы (если они есть)

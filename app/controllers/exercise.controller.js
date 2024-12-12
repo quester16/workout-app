@@ -1,4 +1,5 @@
-import { prisma } from '../../prisma.js'
+import { prisma } from '../prisma.js'
+import { getLastUniqueExerciseIds } from '../utils/exercise.util.js'
 
 export const getExercise = async (req, res) => {
 	try {
@@ -67,7 +68,6 @@ export const createExerciseLog = async (req, res) => {
 			})
 
 			res.json(exerciseLog)
-			console.log(exerciseLog.createdAt, 'today:', today)
 		}
 	} catch (error) {
 		res.status(500).json({ error: error.message })
@@ -116,36 +116,23 @@ export const createExercise = async (req, res) => {
 }
 
 //get completed exercises
-export const getCompletedExericises = async (req, res) => {
-	const id = +req.params.id
+export const getCompletedExercises = async (req, res) => {
+	const workoutLogID = +req.params.id
 	try {
-		const workout = await prisma.workout.findFirst({
+		const workoutLog = await prisma.workoutLog.findFirst({
 			where: {
-				id
+				id: workoutLogID
 			},
 			include: {
-				workoutLogs: {
-					select: {
-						workoutId: true
-					}
-				},
-				exercises: {
-					include: {
-						exerciseLogs: true
-					}
-				}
+				exerciseLogs: true
 			}
 		})
-
-		const isCompleted = {}
-		workout.exercises.forEach(ex => {
-			ex.exerciseLogs.forEach(log => {
-				isCompleted[ex.name] =
-					log.workoutLogId === workout.workoutLogs.slice(-1)[0].workoutId
-			})
-		})
-		console.log(isCompleted)
-		res.json(isCompleted)
+		if (!workoutLog) {
+			return res.status(202).json([])
+		}
+		const newArr = getLastUniqueExerciseIds(workoutLog.exerciseLogs)
+		console.log(newArr)
+		res.status(200).json(newArr)
 	} catch (error) {
 		res.status(500).json({ error: error.message })
 	}

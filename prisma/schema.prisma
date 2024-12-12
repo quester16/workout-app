@@ -23,8 +23,10 @@ model User {
   password String
   images   String[]
 
+  Exercise     Exercise[]
   exerciseLogs ExerciseLog[]
   workoutLogs  WorkoutLog[]
+  Workout      Workout[]
 }
 
 model Workout {
@@ -37,6 +39,9 @@ model Workout {
 
   exercises   Exercise[]
   workoutLogs WorkoutLog[]
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
 }
 
 model Exercise {
@@ -44,12 +49,15 @@ model Exercise {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  name     String
-  times    Int
+  name  String
+  times Int
 
   workouts Workout[]
 
   exerciseLogs ExerciseLog[]
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
 }
 
 model ExerciseLog {
@@ -72,7 +80,7 @@ model ExerciseLog {
   @@map("Exercise_log")
 }
 
-model ExerciseSets{
+model ExerciseSets {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
