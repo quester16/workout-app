@@ -10,7 +10,25 @@ export const getUserProfile = async (req, res) => {
 	})
 
 	if (user) {
-		res.json(user)
+		const totalWorkouts = user.workoutLogs.reduce(
+			(acc, obj) => (obj.isCompleted === true ? acc + 1 : acc),
+			0
+		)
+
+		const exerciseLogs = await prisma.exerciseLog.findMany({
+			where: {
+				userId: user.id
+			},
+			select: {
+				times: true
+			}
+		})
+		const totalWeight = exerciseLogs[0].times.reduce(
+			(acc, item) => (acc += item.weight),
+			0
+		)
+
+		res.json({ user, totalWeight, totalWorkouts })
 	} else {
 		res.status(404).send('Not Found')
 	}

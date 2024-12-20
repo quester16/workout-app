@@ -10,7 +10,8 @@ export const getExercise = async (req, res) => {
 						id: true,
 						userId: true,
 						isCompleted: true,
-						times: true
+						times: true,
+						workoutLog: true
 					}
 				}
 			}
@@ -63,7 +64,8 @@ export const createExerciseLog = async (req, res) => {
 			const exerciseLog = await prisma.exerciseLog.create({
 				data: {
 					workoutLogId: parseInt(workoutLogId),
-					exerciseId: parseInt(exerciseId)
+					exerciseId: parseInt(exerciseId),
+					userId: req.user.id
 				}
 			})
 
@@ -99,6 +101,7 @@ export const completeExerciseLog = async (req, res) => {
 	}
 }
 
+// создать упражнение
 export const createExercise = async (req, res) => {
 	const { name, times } = req.body // Получаем данные из body
 
@@ -106,7 +109,8 @@ export const createExercise = async (req, res) => {
 		const exercise = await prisma.exercise.create({
 			data: {
 				name,
-				times
+				times,
+				userId: req.user.id
 			}
 		})
 		res.status(201).json(exercise)

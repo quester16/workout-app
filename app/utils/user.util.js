@@ -4,5 +4,7 @@ export const UserFields = {
 	name: true,
 	createdAt: true,
 	updatedAt: true,
-	images: true
+	images: true,
+	workoutLogs: true,
+	exerciseLogs: true
 }
