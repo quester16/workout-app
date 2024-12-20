@@ -15,7 +15,6 @@ class ExerciseService {
 	}
 	// create exercise log
 	createLogExercise(data) {
-		console.log(data)
 		return caxios.post(`/exercise/log`, {
 			workoutLogId: +data.workoutLogId,
 			exerciseId: +data.data
@@ -27,7 +26,6 @@ class ExerciseService {
 	}
 
 	createSets(data) {
-		console.log(data)
 		return caxios.post(`/exercise/set/${data.id}`, data.data)
 	}
 }

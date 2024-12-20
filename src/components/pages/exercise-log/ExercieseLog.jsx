@@ -1,7 +1,5 @@
-import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import ExerciseService from '../../../services/exercise/exercise.service.js'
 import Layout from '../../layout/Layout.jsx'
 import { Button } from '../../ui/button/Button.jsx'
 import { Loader } from '../../ui/loader/Loader.jsx'
@@ -11,13 +9,7 @@ import { useExerciseLog } from './useExerciseLog.js'
 
 export const ExerciseLog = () => {
 	const { id } = useParams()
-	const { handleCreateExerciseLog } = useExerciseLog()
-
-	const { data: exercise, isLoading } = useQuery({
-		queryKey: ['get log', id],
-		queryFn: () => ExerciseService.getAllExercises(),
-		select: ({ data }) => data
-	})
+	const { handleCreateExerciseLog, exercise, isLoading } = useExerciseLog()
 
 	// 2. Стейт для хранения сетов
 	const [sets, setSets] = useState([])
@@ -33,21 +25,25 @@ export const ExerciseLog = () => {
 			setSets(savedValues)
 		} else {
 			const currentExercise = exercise.find(exer => exer.id === +id)
-			console.log('cur', currentExercise)
 
 			if (currentExercise) {
+				const indexOfTimes = currentExercise.exerciseLogs.length - 2
+
 				const initialSets = Array.from({ length: currentExercise.times }).map(
 					(_, index) => ({
 						id: index,
-						repeat: 0,
-						weight: 0
+						repeat:
+							currentExercise.exerciseLogs[indexOfTimes]?.times[index].repeat,
+						weight:
+							currentExercise.exerciseLogs[indexOfTimes]?.times[index].weight +
+							'kg'
 					})
 				)
+				console.log(initialSets)
 				setSets(initialSets) // Устанавливаем начальные данные
 			}
 		}
 	}, [exercise, id])
-
 	// 4. useEffect для сохранения в localStorage при изменении sets
 	useEffect(() => {
 		if (sets && sets.length > 0) {
@@ -56,7 +52,7 @@ export const ExerciseLog = () => {
 				JSON.stringify(sets)
 			)
 		}
-	}, [sets])
+	}, [exercise, id, sets])
 
 	// 5. Логика рендера
 	if (isLoading) {
@@ -74,6 +70,9 @@ export const ExerciseLog = () => {
 		return <p>Exercise not found</p>
 	}
 
+	let exerciseLogId = currentExercise.exerciseLogs.slice(-1)[0].id
+	let isCompleted = currentExercise.exerciseLogs.slice(-1)[0].isCompleted
+
 	const generateActionRow = () => {
 		return Array.from({ length: currentExercise.times }).map((_, index) => {
 			return (
@@ -87,8 +86,6 @@ export const ExerciseLog = () => {
 			)
 		})
 	}
-	let exerciseLogId = currentExercise.exerciseLogs.slice(-1)[0].id
-	let isCompleted = currentExercise.exerciseLogs.slice(-1)[0].isCompleted
 
 	return (
 		<Layout>

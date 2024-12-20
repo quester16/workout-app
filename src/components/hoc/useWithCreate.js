@@ -26,6 +26,7 @@ export const useWithCreate = props => {
 				? reset({ name: '', select: [] })
 				: reset({ name: '', times: '', select: [] })
 			console.log('success')
+			setOnError(false)
 		},
 		onError: error => {
 			setOnError(true)

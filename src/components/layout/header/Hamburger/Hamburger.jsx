@@ -13,11 +13,14 @@ const Hamburger = () => {
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
 	const handleLogout = () => {
-		console.log('logout')
-		Cookies.remove(TOKEN)
-		dispatch(setIsAuth(false))
-		navigate('/auth')
+		const isLogout = confirm('Вы уверены')
+		if (isLogout) {
+			Cookies.remove(TOKEN)
+			dispatch(setIsAuth(false))
+			navigate('/auth')
+		}
 	}
+	
 	const { isOpen, setIsOpen, ref } = useOnClickOutside(false)
 	return (
 		<div className={style.hamburger} ref={ref}>
@@ -40,7 +43,7 @@ const Hamburger = () => {
 							</li>
 						))}
 						<li>
-							<button onClick={handleLogout}>Logout</button>
+							<button onClick={handleLogout}>Выйти</button>
 						</li>
 					</ul>
 				</div>

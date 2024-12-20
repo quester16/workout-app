@@ -1,17 +1,28 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 import ExerciseService from '../../../services/exercise/exercise.service.js'
 
 export const useExerciseLog = () => {
 	const navigate = useNavigate()
 	const { id } = useParams()
+	const queryClient = useQueryClient()
+
+	const { data: exercise, isLoading } = useQuery({
+		queryKey: ['get log', id],
+		queryFn: () => ExerciseService.getAllExercises(),
+		select: ({ data }) => data
+	})
 
 	const { mutate } = useMutation({
 		mutationFn: data => {
 			ExerciseService.createSets(data)
 		},
 		onSuccess: () => {
-			navigate(`/workout/${id}`)
+			queryClient.removeQueries('exercise completed flag')
+
+			navigate(
+				`/workout/${exercise[0]?.exerciseLogs?.slice(-1)[0].workoutLog.workoutId}`
+			)
 		}
 	})
 
@@ -29,7 +40,13 @@ export const useExerciseLog = () => {
 		// 	prev.map((_, index) => ({ id: index, repeat: 0, weight: 0 }))
 		// )
 	}
+
+	function withLocalStorage() {}
+
 	return {
-		handleCreateExerciseLog
+		handleCreateExerciseLog,
+		exercise,
+		isLoading,
+		withLocalStorage
 	}
 }

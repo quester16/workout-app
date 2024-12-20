@@ -21,6 +21,7 @@ export const useSingleWorkout = () => {
 	const isCompleted = useQuery({
 		queryKey: ['exercise completed flag'],
 		queryFn: () => ExerciseService.getIsCompletedExercise(workoutLogId),
+		refetchOnMount: true,
 		select: ({ data }) => data,
 		enabled: !!workoutLogId
 	})
@@ -41,14 +42,16 @@ export const useSingleWorkout = () => {
 	})
 
 	const handleMutate = (exId, isCompleted) => {
-		console.log(isCompleted)
 		if (isCompleted) {
 			navigate('/exercise/' + exId)
 		} else createLogExercise(exId)
 	}
 
 	const handleCompleteWorkout = workoutLogId => {
-		if (isCompleted.data[0] === true && !isCompleted.data[1] === true) {
+		const allTrue = isCompleted.data.every(
+			obj => Object.values(obj)[0] === true
+		)
+		if (allTrue) {
 			completeWorkout(workoutLogId)
 		} else alert('завершите упражнение')
 	}

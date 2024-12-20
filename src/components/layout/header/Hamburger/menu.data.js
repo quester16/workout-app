@@ -1,18 +1,18 @@
 export const menu = [
 	{
-		title: 'Home',
+		title: 'Главная',
 		link: '/'
 	},
 	{
-		title: 'Workouts',
+		title: 'Тренировки',
 		link: '/workouts'
 	},
 	{
-		title: 'Create new',
+		title: 'Создать тренировку',
 		link: '/new-workout'
 	},
 	{
-		title: 'Profile',
+		title: 'Профиль',
 		link: '/profile'
 	}
 ]
