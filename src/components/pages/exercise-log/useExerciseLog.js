@@ -26,27 +26,21 @@ export const useExerciseLog = () => {
 		}
 	})
 
-	const handleCreateExerciseLog = (data, setSets) => {
+	const handleCreateExerciseLog = data => {
 		const newData = data.sets.map((item, i, arr) => ({
 			...item,
+			repeat: +item.repeat,
 			weight:
 				typeof arr[i].weight === 'string'
 					? +arr[i].weight.match(/\d+/)[0]
 					: arr[i].weight
 		}))
 		mutate({ data: newData, id: data.id })
-
-		// setSets(prev =>
-		// 	prev.map((_, index) => ({ id: index, repeat: 0, weight: 0 }))
-		// )
 	}
-
-	function withLocalStorage() {}
 
 	return {
 		handleCreateExerciseLog,
 		exercise,
-		isLoading,
-		withLocalStorage
+		isLoading
 	}
 }

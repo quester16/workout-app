@@ -3,7 +3,7 @@ import UserService from '../../../services/user.service.js'
 import WorkoutService from '../../../services/workout.service.js'
 
 export const useProfile = () => {
-	const { data } = useQuery({
+	const { data, isLoading } = useQuery({
 		queryKey: ['profile'],
 		queryFn: UserService.getProfile,
 		select: ({ data }) => data
@@ -23,6 +23,7 @@ export const useProfile = () => {
 	return {
 		data,
 		allWorkouts,
-		MremoveWorkout
+		MremoveWorkout,
+		isLoading
 	}
 }

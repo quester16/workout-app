@@ -3,6 +3,7 @@ import Layout from '../layout/Layout.jsx'
 import { Notification } from '../notification/Notification.jsx'
 import { Button } from '../ui/button/Button.jsx'
 import { Input } from '../ui/input/Input.jsx'
+import { Loader } from '../ui/loader/Loader.jsx'
 import { ReactSelect } from '../ui/select/Select.jsx'
 import { useWithCreate } from './useWithCreate.js'
 import style from './withCreate.module.scss'
@@ -17,9 +18,10 @@ const withCreate = (WrappedComponent, type) => {
 			register,
 			control,
 			onError,
-			isSuccess
+			isSuccess,
+			isPending
 		} = useWithCreate(type)
-		console.log(isSuccess)
+		console.log(isPending)
 		const toRender = () => {
 			return (
 				<div className={style.profileContainer}>
@@ -32,6 +34,7 @@ const withCreate = (WrappedComponent, type) => {
 					{isSuccess && (
 						<Notification message={'Успешно добавлено!'} success={true} />
 					)}
+					{isPending && <Loader />}
 					<form className={style.form} onSubmit={handleSubmit(createExercise)}>
 						<Input
 							register={register}

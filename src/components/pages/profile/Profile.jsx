@@ -1,13 +1,18 @@
 import Layout from '../../layout/Layout.jsx'
+import { Loader } from '../../ui/loader/Loader.jsx'
 import styles from './Profile.module.scss'
 import { useProfile } from './useProfile.js'
 
 const Profile = () => {
-	const { data, allWorkouts, MremoveWorkout } = useProfile()
+	const { data, allWorkouts, MremoveWorkout, isLoading } = useProfile()
 
 	const handleDelete = id => {
 		MremoveWorkout(id)
 		window.location.reload()
+	}
+
+	if (isLoading) {
+		return <Loader />
 	}
 
 	return (

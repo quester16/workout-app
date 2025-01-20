@@ -74,13 +74,11 @@ export const ExerciseLog = () => {
 	}
 
 	if (!exercise || !exercise) {
-		console.warn('No exercise found')
 		return <p>No exercises found</p>
 	}
 
 	const currentExercise = exercise.find(exer => exer.id === +id)
 	if (!currentExercise) {
-		console.warn('Exercise not found')
 		return <p>Exercise not found</p>
 	}
 

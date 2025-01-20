@@ -16,7 +16,6 @@ const selections = {
 	weight: nums('weight')
 }
 
-// eslint-disable-next-line react/prop-types
 function NumberPicker({ getValues, setShow, sets, index }) {
 	const [pickerValue, setPickerValue] = useState(
 		sets

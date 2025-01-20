@@ -10,13 +10,13 @@ export const useSingleWorkout = () => {
 	const { id } = useParams()
 	const navigate = useNavigate()
 
-	const workout = useQuery({
+	const { data: workout, isLoading } = useQuery({
 		queryKey: ['exercise-log'],
 		queryFn: () => WorkoutService.getOneWorkout(id),
 		select: ({ data }) => data
 	})
-	dispatch(setWorkout(workout.data))
-	let workoutLogId = workout?.data?.workoutLogs.slice(-1)[0].id
+	dispatch(setWorkout(workout))
+	let workoutLogId = workout?.workoutLogs.slice(-1)[0].id
 
 	const isCompleted = useQuery({
 		queryKey: ['exercise completed flag'],
@@ -59,6 +59,7 @@ export const useSingleWorkout = () => {
 	return {
 		isCompleted,
 		workout,
+		isLoading,
 		handleMutate,
 		handleCompleteWorkout
 	}

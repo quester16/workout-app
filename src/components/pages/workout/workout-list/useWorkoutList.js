@@ -6,12 +6,12 @@ export const useWorkoutList = () => {
 	const navigate = useNavigate()
 	const queryClient = useQueryClient()
 
-	const { data } = useQuery({
+	const { data, isLoading } = useQuery({
 		queryKey: ['workout-list'],
 		queryFn: () => WorkoutService.getAllWorkouts(),
 		select: ({ data }) => data
 	})
-	const { mutate, error } = useMutation({
+	const { mutate, error, isPending } = useMutation({
 		mutationFn: id => WorkoutService.createWorkoutLog(id),
 		onSuccess: workout => {
 			queryClient.removeQueries('exercise completed flag')
@@ -26,6 +26,8 @@ export const useWorkoutList = () => {
 	return {
 		handleClick,
 		data,
-		error
+		error,
+		isLoading,
+		isPending
 	}
 }
