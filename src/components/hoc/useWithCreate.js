@@ -25,7 +25,6 @@ export const useWithCreate = props => {
 			props === 'workout'
 				? reset({ name: '', select: [] })
 				: reset({ name: '', times: '', select: [] })
-			console.log('success')
 			setOnError(false)
 		},
 		onError: error => {
@@ -47,10 +46,6 @@ export const useWithCreate = props => {
 				exerciseType: data.select.label
 			})
 		}
-		console.log('createWorkout', {
-			name: data.name,
-			exerciseIds: data.select.map(ex => ex.value)
-		})
 	}
 
 	return {

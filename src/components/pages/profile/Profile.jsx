@@ -3,21 +3,19 @@ import styles from './Profile.module.scss'
 import { useProfile } from './useProfile.js'
 
 const Profile = () => {
-	const { data } = useProfile()
-	const user = {
-		beforePhoto: 'src/assets/react.svg',
-		afterPhoto: 'src/assets/react.svg'
+	const { data, allWorkouts, MremoveWorkout } = useProfile()
+
+	const handleDelete = id => {
+		MremoveWorkout(id)
+		window.location.reload()
 	}
-	const {
-		beforePhoto,
-		afterPhoto
-	} = user
+
 	return (
 		<Layout>
 			<div className={styles.profileContainer}>
 				{/* Заголовок профиля */}
 				<h1 className={styles.title}>Your Fitness Profile</h1>
-				<h3>{data?.data && data?.data?.user.name}</h3>
+				<h3>{data?.user.email}</h3>
 
 				{/* Информация о пользователе */}
 				<div className={styles.profileInfo}>
@@ -27,28 +25,34 @@ const Profile = () => {
 					</div>
 					<div className={styles.profileStat}>
 						<h3>Completed Workouts</h3>
-						<p>{data?.data?.totalWorkouts}</p>
+						<p>{data?.totalWorkouts}</p>
 					</div>
 					<div className={styles.profileStat}>
 						<h3>Total Weight Lifted</h3>
-						<p>{data?.data?.totalWeight} kg</p>
+						<p>{data?.totalWeight} kg</p>
 					</div>
 				</div>
 
 				{/* Фото "До и После" */}
-				<div className={styles.profilePhotos}>
-					<div className={styles.photoBlock}>
-						<h3>Before</h3>
-						<img
-							src={beforePhoto}
-							alt="Before"
-							className={styles.profilePhoto}
-						/>
-					</div>
-					<div className={styles.photoBlock}>
-						<h3>After</h3>
-						<img src={afterPhoto} alt="After" className={styles.profilePhoto} />
-					</div>
+				<div className={styles.workouts}>
+					{allWorkouts?.map((workout, i) => {
+						return (
+							<div key={i} className={styles.workout}>
+								<h4>{workout.name}</h4>
+								<div
+									className={styles.delete}
+									onClick={() => handleDelete(workout.id)}
+								>
+									<img
+										src={
+											'https://cdn.iconscout.com/icon/premium/png-256-thumb/delete-52-103683.png?f=webp&w=128'
+										}
+										alt={'delete'}
+									/>
+								</div>
+							</div>
+						)
+					})}
 				</div>
 			</div>
 		</Layout>

@@ -25,7 +25,7 @@ export const ExerciseLogRows = ({ index, currentExercise, setSets, sets }) => {
 			</div>
 			{sets[index] && (
 				<div className={style.action_col} onClick={() => setIsOpen(!isOpen)}>
-					{sets[index].weight} / {sets[index].repeat}
+					{sets[index].weight || '0kg / '} / {sets[index].repeat || '0'}
 				</div>
 			)}
 			{isOpen && (

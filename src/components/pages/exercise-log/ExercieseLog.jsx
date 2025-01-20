@@ -17,18 +17,23 @@ export const ExerciseLog = () => {
 	// 3. useEffect для инициализации данных из localStorage или exercises
 	useEffect(() => {
 		if (!exercise || !exercise) return // Проверка наличия данных
-
 		const savedValues = JSON.parse(
 			localStorage.getItem(exercise?.find(exer => exer.id === +id).name)
 		)
-		if (savedValues && Array.isArray(savedValues)) {
+		if (
+			savedValues &&
+			Array.isArray(savedValues) &&
+			!savedValues[0].weight.includes('undefined')
+		) {
 			setSets(savedValues)
 		} else {
 			const currentExercise = exercise.find(exer => exer.id === +id)
 
-			if (currentExercise) {
-				const indexOfTimes = currentExercise.exerciseLogs.length - 2
-
+			const indexOfTimes = currentExercise.exerciseLogs.length - 2
+			if (
+				currentExercise &&
+				currentExercise.exerciseLogs[indexOfTimes]?.times.length
+			) {
 				const initialSets = Array.from({ length: currentExercise.times }).map(
 					(_, index) => ({
 						id: index,
@@ -41,6 +46,15 @@ export const ExerciseLog = () => {
 				)
 				console.log(initialSets)
 				setSets(initialSets) // Устанавливаем начальные данные
+			} else {
+				const initialState = Array.from({ length: currentExercise.times }).map(
+					(_, index) => ({
+						id: index,
+						repeat: '0',
+						weight: '0kg'
+					})
+				)
+				setSets(initialState)
 			}
 		}
 	}, [exercise, id])
