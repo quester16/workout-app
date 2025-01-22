@@ -1,49 +1,57 @@
-@import "src/styles/variables";
+@import 'src/styles/variables';
 
 .hamburger {
-  position: relative;
+	position: relative;
 }
 .menu {
-  z-index: 10;
-  background-color: $container-dark;
-  width: max-content;
-  height: max-content;
-  padding: 10px;
-  border-radius: 10px;
-  position: absolute;
-  top: 40px;
-  left: -160px;
-  display: none;
+	z-index: 10;
+	background-color: $container-dark;
+	width: max-content;
+	height: max-content;
+	padding: 10px;
+	border-radius: 10px;
+	border: 1px solid $accent-orange;
+	position: absolute;
+	top: 40px;
+	left: -160px;
+	display: none;
 
-  li a {
-    display: block;
-    color: $text-light;
-    padding: 5px;
-    &:hover {
-      color: $text-muted;
-    }
-  }
+	ul {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+	li a {
+		display: block;
+		color: $text-light;
+		padding: 5px;
+		border-radius: 5px;
+		border: 1px solid black;
+		&:hover {
+			color: $text-muted;
+		}
+	}
 
-  button {
-    font-size: inherit;
-    font-family: inherit;
-    padding: 5px;
-    color: inherit;
-    &:hover {
-      color: $text-muted;
-    }
-  }
+	button {
+		font-size: inherit;
+		font-family: inherit;
+		padding: 5px;
+		color: inherit;
+		&:hover {
+			color: $text-muted;
+		}
+	}
 }
 .show {
-  display: block;
-  animation: show 0.4s ease;
+	display: block;
+	animation: show 0.4s ease;
 }
 
 @keyframes show {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }

@@ -10,16 +10,16 @@
 	transition: all 0.3s ease;
 	cursor: pointer;
 	&:hover {
-		background-color: lighten($primary-green, 10%);
+		background-color: $primary-green;
 	}
 }
 .primary {
 	background: $primary-green;
 }
 .secondary {
-	background: #0c54de;
+	background: $primary-blue;
 	&:hover {
-		background-color: darken(#0c54de, 25%);
+		background-color: $primary-blue;
 	}
 }
 .wrapper {

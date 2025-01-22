@@ -10,6 +10,12 @@ export const WorkoutList = () => {
 	const { handleClick, data, error, isLoading, isPending } = useWorkoutList()
 	const navigate = useNavigate()
 
+	const sortedWorkouts = data?.sort((a, b) => {
+		const dateA = new Date(a.workoutLogs.slice(-1)[0]?.createdAt || 0)
+		const dateB = new Date(b.workoutLogs.slice(-1)[0]?.createdAt || 0)
+		return dateA - dateB // Для сортировки по возрастанию
+	})
+
 	if (isPending) return <Loader />
 	return (
 		<Layout>
@@ -29,31 +35,14 @@ export const WorkoutList = () => {
 						<img src={'loader.gif'} alt="loading.gif" />
 					</div>
 				)}
-				{data?.length
-					? data?.map(workout => {
-							let day = new Date(
-								workout?.workoutLogs
-									? workout?.workoutLogs.slice(-1)[0].createdAt
-									: ''
-							).getDate()
-							let month = new Date(
-								workout?.workoutLogs
-									? workout?.workoutLogs.slice(-1)[0].createdAt
-									: new Date().getDate()
-							).getMonth()
+				{sortedWorkouts?.length
+					? sortedWorkouts?.map(workout => {
 							return (
 								<div
 									key={workout.id}
 									className={style.workout_card}
 									onClick={() => handleClick(workout.id)}
 								>
-									<div className={style.lower_title}>
-										последнее выпол. -{' '}
-										{Intl.DateTimeFormat('ru-RU', {
-											month: 'short'
-										}).format(month)}{' '}
-										{day}
-									</div>
 									<div className={style.title}>{workout.name} </div>
 								</div>
 							)

@@ -44,7 +44,6 @@ export const ExerciseLog = () => {
 							'kg'
 					})
 				)
-				console.log(initialSets)
 				setSets(initialSets) // Устанавливаем начальные данные
 			} else {
 				const initialState = Array.from({ length: currentExercise.times }).map(
@@ -123,7 +122,10 @@ export const ExerciseLog = () => {
 						<Button
 							type={'primary'}
 							handleClick={() =>
-								handleCreateExerciseLog({ sets, id: exerciseLogId }, setSets)
+								handleCreateExerciseLog(
+									{ sets, id: exerciseLogId, currentExercise },
+									setSets
+								)
 							}
 						>
 							Сохранить

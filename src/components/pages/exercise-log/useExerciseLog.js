@@ -6,7 +6,6 @@ export const useExerciseLog = () => {
 	const navigate = useNavigate()
 	const { id } = useParams()
 	const queryClient = useQueryClient()
-
 	const { data: exercise, isLoading } = useQuery({
 		queryKey: ['get log', id],
 		queryFn: () => ExerciseService.getAllExercises(),
@@ -14,15 +13,16 @@ export const useExerciseLog = () => {
 	})
 
 	const { mutate } = useMutation({
-		mutationFn: data => {
-			ExerciseService.createSets(data)
+		mutationFn: ({ data, id }) => {
+			ExerciseService.createSets(data, id)
 		},
 		onSuccess: () => {
 			queryClient.removeQueries('exercise completed flag')
+			const currentExercise = exercise.find(exer => exer.id === +id)
+			const workoutId =
+				currentExercise.exerciseLogs.slice(-1)[0].workoutLog.workoutId
 
-			navigate(
-				`/workout/${exercise[0]?.exerciseLogs?.slice(-1)[0].workoutLog.workoutId}`
-			)
+			navigate(`/workout/${workoutId}`)
 		}
 	})
 
@@ -35,6 +35,7 @@ export const useExerciseLog = () => {
 					? +arr[i].weight.match(/\d+/)[0]
 					: arr[i].weight
 		}))
+
 		mutate({ data: newData, id: data.id })
 	}
 

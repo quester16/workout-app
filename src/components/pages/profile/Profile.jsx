@@ -4,7 +4,7 @@ import styles from './Profile.module.scss'
 import { useProfile } from './useProfile.js'
 
 const Profile = () => {
-	const { data, allWorkouts, MremoveWorkout, isLoading } = useProfile()
+	const { profile, allWorkouts, MremoveWorkout, isLoading } = useProfile()
 
 	const handleDelete = id => {
 		MremoveWorkout(id)
@@ -20,7 +20,7 @@ const Profile = () => {
 			<div className={styles.profileContainer}>
 				{/* Заголовок профиля */}
 				<h1 className={styles.title}>Your Fitness Profile</h1>
-				<h3>{data?.user.email}</h3>
+				<h3>{profile?.user.email}</h3>
 
 				{/* Информация о пользователе */}
 				<div className={styles.profileInfo}>
@@ -30,11 +30,11 @@ const Profile = () => {
 					</div>
 					<div className={styles.profileStat}>
 						<h3>Completed Workouts</h3>
-						<p>{data?.totalWorkouts}</p>
+						<p>{profile?.totalWorkouts}</p>
 					</div>
 					<div className={styles.profileStat}>
 						<h3>Total Weight Lifted</h3>
-						<p>{data?.totalWeight} kg</p>
+						<p>{profile?.totalWeight} kg</p>
 					</div>
 				</div>
 

@@ -18,7 +18,7 @@ export const useSingleWorkout = () => {
 	dispatch(setWorkout(workout))
 	let workoutLogId = workout?.workoutLogs.slice(-1)[0].id
 
-	const isCompleted = useQuery({
+	const { data: isCompleted, isPending: isCompletedPending } = useQuery({
 		queryKey: ['exercise completed flag'],
 		queryFn: () => ExerciseService.getIsCompletedExercise(workoutLogId),
 		refetchOnMount: true,
@@ -26,7 +26,7 @@ export const useSingleWorkout = () => {
 		enabled: !!workoutLogId
 	})
 
-	const { mutate: createLogExercise } = useMutation({
+	const { mutate: createLogExercise, isPending } = useMutation({
 		mutationFn: data =>
 			ExerciseService.createLogExercise({ data, workoutLogId }),
 		onSuccess: data => {
@@ -48,9 +48,7 @@ export const useSingleWorkout = () => {
 	}
 
 	const handleCompleteWorkout = workoutLogId => {
-		const allTrue = isCompleted.data.every(
-			obj => Object.values(obj)[0] === true
-		)
+		const allTrue = isCompleted.every(obj => Object.values(obj)[0] === true)
 		if (allTrue) {
 			completeWorkout(workoutLogId)
 		} else alert('завершите упражнение')
@@ -58,9 +56,11 @@ export const useSingleWorkout = () => {
 
 	return {
 		isCompleted,
+		isCompletedPending,
 		workout,
 		isLoading,
 		handleMutate,
-		handleCompleteWorkout
+		handleCompleteWorkout,
+		isPending
 	}
 }

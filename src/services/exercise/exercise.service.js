@@ -25,8 +25,8 @@ class ExerciseService {
 		return caxios.get(`/exercises/completed/${id}`)
 	}
 
-	createSets(data) {
-		return caxios.post(`/exercise/set/${data.id}`, data.data)
+	createSets(data, id) {
+		return caxios.post(`/exercise/set/${id}`, data)
 	}
 }
 

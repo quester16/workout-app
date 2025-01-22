@@ -11,10 +11,12 @@ export const SingleWorkout = () => {
 		isCompleted,
 		workout,
 		handleCompleteWorkout,
-		isLoading
+		isLoading,
+		isPending,
+		isCompletedPending
 	} = useSingleWorkout()
 
-	if (isLoading) {
+	if (isLoading || isPending || isCompletedPending) {
 		return <Loader />
 	}
 
@@ -26,13 +28,13 @@ export const SingleWorkout = () => {
 					return (
 						<div
 							className={cn(style.exercise_card, {
-								[style.completed]: isCompleted?.data?.find(el => el[ex.id])
+								[style.completed]: isCompleted?.find(el => el[ex.id])
 							})}
 							key={ex.id}
 							onClick={() =>
 								handleMutate(
 									ex.id,
-									isCompleted.data.find(el => el[ex.id])
+									isCompleted.find(el => el[ex.id])
 								)
 							}
 						>

@@ -21,7 +21,7 @@ const withCreate = (WrappedComponent, type) => {
 			isSuccess,
 			isPending
 		} = useWithCreate(type)
-		console.log(isPending)
+
 		const toRender = () => {
 			return (
 				<div className={style.profileContainer}>

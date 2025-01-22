@@ -1,12 +1,18 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import UserService from '../../../services/user.service.js'
 import WorkoutService from '../../../services/workout.service.js'
 
 export const useProfile = () => {
-	const { data, isLoading } = useQuery({
+	const queryClient = useQueryClient()
+
+	// Обновить данные
+	queryClient.invalidateQueries('profile')
+
+	const { data: profile, isLoading } = useQuery({
 		queryKey: ['profile'],
-		queryFn: UserService.getProfile,
-		select: ({ data }) => data
+		queryFn: () => UserService.getProfile(),
+		select: ({ data }) => data,
+		refetchOnMount: true
 	})
 
 	const { data: allWorkouts } = useQuery({
@@ -21,7 +27,7 @@ export const useProfile = () => {
 	})
 
 	return {
-		data,
+		profile,
 		allWorkouts,
 		MremoveWorkout,
 		isLoading

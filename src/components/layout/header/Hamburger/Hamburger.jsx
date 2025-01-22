@@ -20,7 +20,7 @@ const Hamburger = () => {
 			navigate('/auth')
 		}
 	}
-	
+
 	const { isOpen, setIsOpen, ref } = useOnClickOutside(false)
 	return (
 		<div className={style.hamburger} ref={ref}>
@@ -36,14 +36,14 @@ const Hamburger = () => {
 				<div>
 					<ul>
 						{menu.map((item, index) => (
-							<li key={index}>
+							<li className={style.list_item} key={index}>
 								<Link to={item.link} key={index}>
 									{item.title}
 								</Link>
 							</li>
 						))}
-						<li>
-							<button onClick={handleLogout}>Выйти</button>
+						<li className={style.list_item}>
+							<a onClick={handleLogout}>Выйти</a>
 						</li>
 					</ul>
 				</div>
