@@ -1,7 +1,7 @@
 export const customStyles = {
 	control: (provided, state) => ({
 		...provided,
-		width: '400px', // Фиксированная ширина для select
+		maxWidth: '400px', // Фиксированная ширина для select
 		margin: '0 auto 20px',
 		backgroundColor: '#1c1c1e', // Темный фон
 		borderColor: state.isFocused ? '#28a745' : '#1e90ff', // Зеленый при фокусе, синий по умолчанию
@@ -19,7 +19,7 @@ export const customStyles = {
 	}),
 	menu: (provided, state) => ({
 		...provided,
-		width: '400px', // Фиксированная ширина для меню
+		maxWidth: '400px', // Фиксированная ширина для меню
 		// borderColor: state.isFocused ? "#28a745" : "#1e90ff",
 		backgroundColor: '#2c2c2e', // Темный фон выпадающего меню
 		borderRadius: '8px',
