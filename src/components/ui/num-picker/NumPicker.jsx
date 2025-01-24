@@ -4,7 +4,7 @@ import { Button } from '../button/Button.jsx'
 
 const nums = type => {
 	const arr = []
-	for (let i = 0; i < 100; i++) {
+	for (let i = 0; i < 500; i++) {
 		arr.push(i)
 	}
 	if (type === 'reps') return arr
